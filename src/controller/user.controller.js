@@ -2,6 +2,14 @@ import { UserModel } from "../model/user.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import jwt from "jsonwebtoken";
 
+const Generatetoken =async(data)=>{
+ 
+  return jwt.sign(
+    { id: data._id, email: data.email },
+    process.env.SECRET_KEY
+  );
+}
+
 const createUser = asyncHandler(async (req, res) => {
   const data = req.body;
 
@@ -16,10 +24,7 @@ const createUser = asyncHandler(async (req, res) => {
   const Create = await UserModel.create(data);
   Create.password = null;
 
-  const token = jwt.sign(
-    { id: Create._id, email: Create.email },
-    process.env.SECRET_KEY
-  );
+  const token = await Generatetoken(Create)
 
   return res.status(201).json({
     message: "User register successful",
@@ -41,7 +46,13 @@ const loginUser = asyncHandler(async (req, res) => {
     $or: [{ email: email }, { phone: email }],
   });
 
-  const check = await findUser.Checkpassword(password);
+  if(!findUser){
+    return res.status(404).json({
+      message:"User not exist"
+    })
+  }
+
+  const check = await findUser?.Checkpassword(password);
 
   if (!check) {
     return res.status(404).json({
@@ -51,10 +62,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
   findUser.password = null;
 
-  const token = jwt.sign(
-    { id: findUser._id, email: findUser.email },
-    process.env.SECRET_KEY
-  );
+  const token = await Generatetoken(findUser)
 
   return res.status(200).json({
     message: "Login Successful",
