@@ -6,7 +6,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 const  CreateProduct = asyncHandler(async(req,res)=>{
     const data = req.body
     
-    const Create = await ProductModel.create(data)
+    const Create = await ProductModel.create({...data,user_id:req.user?._id})
 
     return res.status(201).json({
         message:"Product Created Successful"
