@@ -16,7 +16,7 @@ const sub_inner_category = new Schema(
   },
   { timestamps: true }
 );
-export const subInnerCategorySchema = mongoose.model(
+export const subInnerCategoryModel = mongoose.model(
   "subInnerCategory",
   sub_inner_category
 );
