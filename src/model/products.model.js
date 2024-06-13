@@ -4,7 +4,7 @@ const products = new Schema(
   {
     user_id: {
       type: Schema.Types.ObjectId,
-      ref: User,
+      ref: "User",
     },
     title: {
       type: String,
