@@ -15,15 +15,11 @@ const products = new Schema(
       type: String,
       required: true,
     },
-    image: {
-      type: [String],
-    },
     category: {
       type: Schema.Types.ObjectId,
       ref: "Category",
       required: true,
     },
-
     sub_category: {
       type: Schema.Types.ObjectId,
       ref: "subCategory",
@@ -32,10 +28,6 @@ const products = new Schema(
     sub_inner_category: {
       type: Schema.Types.ObjectId,
       ref: "subInnerCategory",
-      required: true,
-    },
-    selling_quantity: {
-      type: String,
       required: true,
     },
     local_charges: {
