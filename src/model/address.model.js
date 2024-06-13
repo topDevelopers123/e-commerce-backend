@@ -56,4 +56,4 @@ const address = new Schema(
   { timestamps: true }
 );
 
-export const addressModel = mongoose.model("address", address);
+export const addressModel = mongoose.model("Address", address);
