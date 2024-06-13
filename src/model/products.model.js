@@ -2,13 +2,9 @@ import mongoose, { Schema } from "mongoose";
 
 const products = new Schema(
   {
-    name: {
-      type: String,
-      required: true,
-    },
     user_id: {
       type: Schema.Types.ObjectId,
-      ref: User,
+      ref: "User",
     },
     title: {
       type: String,
@@ -21,7 +17,6 @@ const products = new Schema(
     },
     image: {
       type: [String],
-      required: true,
     },
     MRP: {
       type: Number,
@@ -35,10 +30,11 @@ const products = new Schema(
     },
     category: {
       type: Schema.Types.ObjectId,
-      ref: "",
-      required: true,
-    },
-    sub_category: {
+      ref:"",
+      required:true
+      },
+      
+      sub_category: {
       type: Schema.Types.ObjectId,
       ref: "",
       required: true,
