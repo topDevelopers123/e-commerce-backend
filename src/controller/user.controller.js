@@ -71,4 +71,15 @@ const loginUser = asyncHandler(async (req, res) => {
   });
 });
 
-export { createUser, loginUser };
+const Query = async (req,res) => {
+
+  try{
+    const data = req.query
+    console.log(data)
+  }
+  catch(error){
+    console.log(err)
+  }
+}
+
+export { createUser, loginUser ,Query};

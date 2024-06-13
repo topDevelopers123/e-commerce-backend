@@ -30,11 +30,11 @@ const products = new Schema(
     },
     category: {
       type: Schema.Types.ObjectId,
-      ref: "",
-      required: true,
-    },
-
-    sub_category: {
+      ref:"",
+      required:true
+      },
+      
+      sub_category: {
       type: Schema.Types.ObjectId,
       ref: "",
       required: true,
