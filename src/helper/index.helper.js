@@ -5,4 +5,4 @@ import { validate } from "./validate.js";
 
 export const RegisterValidate = validate(UserSchema)
 
-export const RegisterProduct = validate(ProductSchema)
+export const ProductValidate = validate(ProductSchema)
