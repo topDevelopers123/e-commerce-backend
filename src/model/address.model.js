@@ -4,12 +4,12 @@ const address = new Schema(
   {
     fullname: {
       type: String,
-      trim:true,
+      trim: true,
       required: true,
     },
     phone: {
       type: String,
-      trim:true,
+      trim: true,
       required: true,
     },
     phone2: {
@@ -19,41 +19,39 @@ const address = new Schema(
     },
     country: {
       type: String,
-      trim:true,
+      trim: true,
       required: true,
     },
     state: {
       type: String,
-      trim:true,
+      trim: true,
       required: true,
     },
     city: {
       type: String,
-      trim:true,
-      required:true
+      trim: true,
+      required: true,
     },
     area: {
       type: String,
-      trim:true,
-      required:true
+      trim: true,
+      required: true,
     },
     house_no: {
       type: String,
-      trim:true,
-      required:true
-      },
-      
-      pincode: {
+      trim: true,
+      required: true,
+    },
+    pincode: {
       type: String,
-      trim:true,
-      required:true
-      },
-      userID: {
+      trim: true,
+      required: true,
+    },
+    user_id: {
       type: Schema.Types.ObjectId,
-      ref:"",
-      required:true
-      },
-      
+      ref: "User",
+      required: true,
+    },
   },
   { timestamps: true }
 );

@@ -4,7 +4,7 @@ const products = new Schema(
   {
     user_id: {
       type: Schema.Types.ObjectId,
-      ref: User,
+      ref: "User",
     },
     title: {
       type: String,
@@ -30,11 +30,11 @@ const products = new Schema(
     },
     category: {
       type: Schema.Types.ObjectId,
-      ref: "",
-      required: true,
-    },
-
-    sub_category: {
+      ref:"",
+      required:true
+      },
+      
+      sub_category: {
       type: Schema.Types.ObjectId,
       ref: "",
       required: true,
