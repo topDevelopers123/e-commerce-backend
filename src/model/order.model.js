@@ -5,11 +5,11 @@ const order = new Schema(
   {
     product_id: {
       type: Schema.Types.ObjectId,
-      ref: "",
+      ref: "Product",
     },
     address_id: {
       type: Schema.Types.ObjectId,
-      ref: "",
+      ref: "Address",
     },
     payment_status: {
       type: String,

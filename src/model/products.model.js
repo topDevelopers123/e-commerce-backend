@@ -18,35 +18,24 @@ const products = new Schema(
     image: {
       type: [String],
     },
-    MRP: {
-      type: Number,
-      trim: true,
-      required: true,
-    },
-    selling: {
-      type: Number,
-      trim: true,
-      required: true,
-    },
     category: {
       type: Schema.Types.ObjectId,
-      ref:"",
-      required:true
-      },
-      
-      sub_category: {
+      ref: "Category",
+      required: true,
+    },
+
+    sub_category: {
       type: Schema.Types.ObjectId,
-      ref: "",
+      ref: "subCategory",
       required: true,
     },
     sub_inner_category: {
       type: Schema.Types.ObjectId,
-      ref: "",
+      ref: "subInnerCategory",
       required: true,
     },
-    stock: {
-      type: Number,
-      trim: true,
+    selling_quantity: {
+      type: String,
       required: true,
     },
     local_charges: {

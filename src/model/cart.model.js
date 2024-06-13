@@ -4,21 +4,16 @@ const cart = new Schema(
   {
     product_id: {
       type: Schema.Types.ObjectId,
-      ref: "",
+      ref: "Product",
       required: true,
     },
-    // color:{
-    //     type:Schema.Types.ObjectId,
-    //     ref:"",
-    //     required:true
-    // },
     size: {
       type: Schema.Types.ObjectId,
-      ref: "",
+      ref: "Size",
     },
     user_id: {
       type: Schema.Types.ObjectId,
-      ref: "",
+      ref: "User",
     },
   },
   { timestamps: true }
