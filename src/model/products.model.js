@@ -2,13 +2,9 @@ import mongoose, { Schema } from "mongoose";
 
 const products = new Schema(
   {
-    name: {
-      type: String,
-      required: true,
-    },
     user_id: {
       type: Schema.Types.ObjectId,
-      ref: User
+      ref: User,
     },
     title: {
       type: String,
@@ -21,69 +17,68 @@ const products = new Schema(
     },
     image: {
       type: [String],
-      required: true,
     },
     MRP: {
       type: Number,
-      trim:true,
-      required:true
+      trim: true,
+      required: true,
     },
     selling: {
       type: Number,
-      trim:true,
-      required:true
+      trim: true,
+      required: true,
     },
     category: {
       type: Schema.Types.ObjectId,
-      ref:"",
-      required:true
-      },
-      
-      sub_category: {
+      ref: "",
+      required: true,
+    },
+
+    sub_category: {
       type: Schema.Types.ObjectId,
-      ref:"",
-      required:true
-      },
-      sub_inner_category: {
+      ref: "",
+      required: true,
+    },
+    sub_inner_category: {
       type: Schema.Types.ObjectId,
-      ref:"",
-      required:true
-      },
-      stock: {
+      ref: "",
+      required: true,
+    },
+    stock: {
       type: Number,
-      trim:true,
-      required:true
-      },
-     local_charges: {
+      trim: true,
+      required: true,
+    },
+    local_charges: {
       type: Number,
-      trim:true,
-      required:true
-      },
-      zonal_charges: {
+      trim: true,
+      required: true,
+    },
+    zonal_charges: {
       type: Number,
-      trim:true,
-      required:true
-      },
-      national_charges: {
+      trim: true,
+      required: true,
+    },
+    national_charges: {
       type: Number,
-      trim:true,
-      required:true
-      },
-      local_deadline: {
+      trim: true,
+      required: true,
+    },
+    local_deadline: {
       type: String,
-      trim:true,
-      required:true
-      },
-      zonal_deadline: {
+      trim: true,
+      required: true,
+    },
+    zonal_deadline: {
       type: String,
-      trim:true,
-      required:true
-      },
-      national_deadline: {
+      trim: true,
+      required: true,
+    },
+    national_deadline: {
       type: String,
-      trim:true,
-      required:true
-      },
+      trim: true,
+      required: true,
+    },
   },
   { timestamps: true }
 );
