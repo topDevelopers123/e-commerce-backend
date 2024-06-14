@@ -1,17 +1,17 @@
-import { subInnersubInnerCategoryModel } from "../model/sub_inner_category.model.js";
+import { subInnerCategoryModel } from "../model/sub_inner_category.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
 
 const Createinnercategory = asyncHandler(async(req,res)=>{
     const data = req.body
 
-    const find = await subInnersubInnerCategoryModel.find(data)
+    const find = await subInnerCategoryModel.find(data)
     if(!find){
         return res.status(400).json({
             message:"Sub Inner category alredy exist"
         })
     }
-    await subInnersubInnerCategoryModel.create(data)
+    await subInnerCategoryModel.create(data)
     return res.status(200).json({
         message:"Sub inner Category created successful"
     })
