@@ -46,17 +46,17 @@ const products = new Schema(
       required: true,
     },
     local_deadline: {
-      type: String,
+      type: Number,
       trim: true,
       required: true,
     },
     zonal_deadline: {
-      type: String,
+      type: Number,
       trim: true,
       required: true,
     },
     national_deadline: {
-      type: String,
+      type: Number,
       trim: true,
       required: true,
     },
