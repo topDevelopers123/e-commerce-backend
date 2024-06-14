@@ -41,6 +41,8 @@ const DeleteInnerCategory = asyncHandler(async (req, res) => {
   });
 });
 
+   
+    
 const UpdateInnerCategory = asyncHandler(async (req, res) => {
   const data = req.body;
   const { id } = req.params;
