@@ -9,11 +9,13 @@ import {
 
 const router = Router();
 
-router.route("/create-subcategory").post(Authontication, createSubCategory);
-router.route("/get-subcategory").get(Authontication, getSubCategory);
+router.route("/create").post(Authontication, createSubCategory);
+router.route("/get").get(Authontication, getSubCategory);
 
 router
-  .route("/delete-subcategory/:id")
+  .route("/delete/:id")
   .delete(Authontication, DeleteSubCategory);
 
-router.route("/update-subcategory/:id").put(Authontication, UpdateSubCategory);
+router.route("/update/:id").put(Authontication, UpdateSubCategory);
+
+export default router;
