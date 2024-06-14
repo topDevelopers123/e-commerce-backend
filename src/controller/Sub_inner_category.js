@@ -5,7 +5,7 @@ const Createinnercategory = asyncHandler(async (req, res) => {
   const data = req.body;
 
   const find = await subInnerCategoryModel.find(data);
-  if (!find) {
+  if (find.length > 0) {
     return res.status(400).json({
       message: "Sub Inner category alredy exist",
     });
@@ -26,7 +26,6 @@ const GetInnerCategory = asyncHandler(async (req, res) => {
 
 const DeleteInnerCategory = asyncHandler(async (req, res) => {
   const { id } = req.params;
-
   const find = await subInnerCategoryModel.findById(id);
 
   if (!find) {
@@ -41,8 +40,6 @@ const DeleteInnerCategory = asyncHandler(async (req, res) => {
   });
 });
 
-   
-    
 const UpdateInnerCategory = asyncHandler(async (req, res) => {
   const data = req.body;
   const { id } = req.params;
