@@ -7,9 +7,14 @@ const cart = new Schema(
       ref: "Product",
       required: true,
     },
-    size: {
+    productDetails: {
       type: Schema.Types.ObjectId,
-      ref: "Size",
+      ref: "ProductDetail",
+    },
+    quantity: {
+      type: Number,
+      require: true,
+      default: 1,
     },
     user_id: {
       type: Schema.Types.ObjectId,
