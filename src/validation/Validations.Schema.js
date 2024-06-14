@@ -18,7 +18,6 @@ export const ProductSchema = vine.object({
       category: vine.string().maxLength(30),
       sub_category: vine.string().maxLength(30),
       sub_inner_category: vine.string().maxLength(30),
-      stock: vine.number(),
       local_charges: vine.number(),
       zonal_charges: vine.number(),
       national_charges: vine.number(),

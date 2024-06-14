@@ -1,14 +1,14 @@
-import {Router} from "express"
+import { Router } from "express";
 
+// local imports
+import UserRouter from "./user.routes.js";
+import ProductRoutes from "./product.routes.js";
+import CartRoute from "./cart.routes.js";
 
-// local imports 
-import UserRouter from "./user.routes.js"
-import ProductRoutes from "./product.routes.js"
+const router = Router();
 
-const router = Router()
+router.use("/user", UserRouter);
+router.use("/product", ProductRoutes);
+router.use("/cart", CartRoute);
 
-router.use("/user",UserRouter)
-router.use("/product",ProductRoutes)
-
-
-export default router
+export default router;

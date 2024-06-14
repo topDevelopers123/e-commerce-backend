@@ -17,12 +17,12 @@ const review = new Schema(
     },
     user_id: {
       type: Schema.Types.ObjectId,
-      ref: "",
+      ref: "User",
       require: true,
     },
     product_id: {
       type: Schema.Types.ObjectId,
-      ref: "",
+      ref: "Product",
       required: true,
     },
     rating: {
