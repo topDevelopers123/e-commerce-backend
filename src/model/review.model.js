@@ -32,4 +32,4 @@ const review = new Schema(
   },
   { timestamps: true }
 );
-export const reviewSchema = mongoose.model("Review", review);
+export const reviewModel = mongoose.model("Review", review);
