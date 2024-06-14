@@ -8,10 +8,11 @@ const AddToCart = asyncHandler(async (req, res) => {
   if (find.length > 0) {
     return res.status(400).json({ message: "item already added" });
   }
-  const myCart = await cartModel.create({ ...data, user: _id });
+  await cartModel.create({ ...data, user: _id });
 
   res.status(200).json({ message: "item added to cart" });
 });
+
 
 const AddQuantity = asyncHandler(async (req, res) => {
   const id = req.params;
@@ -24,6 +25,7 @@ const AddQuantity = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "updated quantity successfully" });
 });
 
+
 const RemoveProductFromCart = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
@@ -35,6 +37,7 @@ const RemoveProductFromCart = asyncHandler(async (req, res) => {
   await cartModel.findByIdAndDelete(id);
   res.status(200).json({ message: "item remove succesfully" });
 });
+
 
 const RemoveAllProduct = asyncHandler(async (req, res) => {
   const { _id } = req.user;
