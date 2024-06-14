@@ -21,21 +21,19 @@ const CreateCategory = asyncHandler(async(req,res)=>{
         })
     }
 
-    const create = await categoryModel.create(data)
-    return res.status(200).json({
-        message:"Category Created successful"
-    })
-})
+  const create = await categoryModel.create(data);
+  return res.status(200).json({
+    message: "Category Created successful",
+  });
+});
 
-
-const GetCategory = asyncHandler(async(req,res)=>{
-    const data = await categoryModel.find({})
-    return res.status(200).json({
-        message:"data",
-        data
-    })
-})
-
+const GetCategory = asyncHandler(async (req, res) => {
+  const data = await categoryModel.find({});
+  return res.status(200).json({
+    message: "data",
+    data,
+  });
+});
 
 const DeleteCategory = asyncHandler(async(req,res)=>{
     const {id}  = req.params
@@ -51,10 +49,10 @@ const DeleteCategory = asyncHandler(async(req,res)=>{
     await subCategoryModel.deleteMany({parent_category:id})
     await categoryModel.findByIdAndDelete(id)
 
-    return res.status(200).json({
-        message:"Category delete successful"
-    })
-})
+  return res.status(200).json({
+    message: "Category delete successful",
+  });
+});
 
 const UpdateCategory = asyncHandler(async(req,res)=>{
     const data = req.body
@@ -73,9 +71,4 @@ const UpdateCategory = asyncHandler(async(req,res)=>{
 })
 
 
-export {
-    CreateCategory,
-    GetCategory,
-    DeleteCategory,
-    UpdateCategory
-}
+export { CreateCategory, GetCategory, DeleteCategory, UpdateCategory };

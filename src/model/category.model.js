@@ -8,7 +8,7 @@ const category = new Schema(
       trim: true,
     },
     image: {
-      type: [String],
+      type: String,
     },
   },
   { timestamps: true }

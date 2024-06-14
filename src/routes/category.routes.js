@@ -8,7 +8,7 @@ const router = Router()
 router.route("/create").post(Authontication,CreateCategory)
 router.route("/get-admin").get(Authontication,GetCategory)
 router.route("/delete/:id").delete(Authontication,DeleteCategory)
-router.route("/create").put(Authontication,UpdateCategory)
+router.route("/update/:id").put(Authontication,UpdateCategory)
 
 
 
