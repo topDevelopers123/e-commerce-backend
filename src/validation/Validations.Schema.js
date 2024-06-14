@@ -26,12 +26,12 @@ export const ProductSchema = vine.object({
 });
 
 export const SubInnerCategory = vine.object({
-  sub_inner_category_name: vine.string(),
-  parent_category1: vine.string(),
-  parent_category2: vine.string(),
+  sub_inner_category_name: vine.string().minLength(3).maxLength(30),
+  parent_category1: vine.string().minLength(5),
+  parent_category2: vine.string().minLength(5),
 });
 
 export const SubCategory = vine.object({
-  sub_category_name: vine.string(),
-  parent_category: vine.string(),
+  sub_category_name: vine.string().minLength(3).maxLength(30),
+  parent_category: vine.string().minLength(5),
 });
