@@ -6,6 +6,7 @@ const ProductDetail = new Schema(
     product_id: {
       type: Schema.Types.ObjectId,
       ref: "Product",
+      required: true,
     },
     Size: {
       type: String,
@@ -38,7 +39,7 @@ const ProductDetail = new Schema(
   { timestamps: true }
 );
 
-export const ProductDetailSchema = mongoose.model(
+export const ProductDetailModel = mongoose.model(
   "ProductDetail",
   ProductDetail
 );
