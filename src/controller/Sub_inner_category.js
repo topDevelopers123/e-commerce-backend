@@ -1,5 +1,5 @@
-import { subInnersubInnerCategoryModel } from "../model/sub_inner_category.model";
-import { asyncHandler } from "../utils/asyncHandler";
+import { subInnersubInnerCategoryModel } from "../model/sub_inner_category.model.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 
 
 const Createinnercategory = asyncHandler(async(req,res)=>{
