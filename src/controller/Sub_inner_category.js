@@ -36,6 +36,7 @@ const DeleteInnerCategory = asyncHandler(async(req,res)=>{
             messages:"Sub inner Category is not exist"
         })
     }
+    await 
     await subInnerCategoryModel.findByIdAndDelete(id)
 
     return res.status(200).json({

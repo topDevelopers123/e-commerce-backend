@@ -1,19 +1,19 @@
 import { subCategoryModel } from "../model/sub_category.model.js";
+import { subInnerCategoryModel } from "../model/sub_inner_category.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
 const createSubCategory = asyncHandler(async (req, res) => {
   const data = req.body;
-
   const find = await subCategoryModel.find({
     parent_category: data.parent_category,
   });
-
   if (find) {
     return res.status(400).json({ message: "parent category already exist" });
   }
   await subCategoryModel.create(data);
   res.status(200).json({ message: "subcategory created successfully" });
 });
+
 
 const getSubCategory = asyncHandler(async (req, res) => {
   const data = await subCategoryModel.find();
@@ -25,13 +25,14 @@ const getSubCategory = asyncHandler(async (req, res) => {
   res.status(200).json({ data, message: "send all sub-category" });
 });
 
+
 const DeleteSubCategory = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
   const find = await subCategoryModel.find({ parent_category: id });
   if (!find)
     return res.status(404).json({ message: "Sub-Category do not exist" });
-
+  await subInnerCategoryModel.deleteMany({parent_category2:id})
   await subCategoryModel.findByIdAndDelete(id);
   res.status(200).json({ message: "Sub-Category deleted successfully" });
 });
