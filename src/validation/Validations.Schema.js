@@ -35,3 +35,16 @@ export const SubCategory = vine.object({
   sub_category_name: vine.string().minLength(3).maxLength(30),
   parent_category: vine.string().minLength(5),
 });
+
+export const addressCheck = vine.object({
+  fullname: vine.string().minLength(3).maxLength(30),
+  phone: vine.string().minLength(10).maxLength(12),
+  phone2: vine.string().minLength(10).maxLength(12),
+  country: vine.string().minLength(3),
+  state: vine.string().minLength(3),
+  city: vine.string().minLength(3),
+  area: vine.string().minLength(5),
+  house_no: vine.string().minLength(5),
+  pincode: vine.string().minLength(3),
+  user_id: vine.string().minLength(8),
+});
