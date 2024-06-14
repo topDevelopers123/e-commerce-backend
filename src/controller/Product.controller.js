@@ -9,12 +9,13 @@ const  CreateProduct = asyncHandler(async(req,res)=>{
     const Create = await ProductModel.create({...data,user_id:req.user?._id})
 
     return res.status(201).json({
-        message:"Product Created Successful"
+        message:"Product Created Successful",
+        data:Create
     })
 })
 
 const GetProduct = asyncHandler(async(_,res)=>{
-    const data = ProductModel.find({})
+    const data = await ProductModel.find({})
 
     return res.status(200).json({
         message:"Data ",
@@ -22,4 +23,46 @@ const GetProduct = asyncHandler(async(_,res)=>{
     })
 })
 
-export {CreateProduct,GetProduct}
+const AdminGetProduct = asyncHandler(async(req,res)=>{
+    const {_id} = req.user
+
+    const data = await ProductModel.find({user_id:_id})
+    return res.status(200).json({
+        message:"data",
+        data
+    })
+})
+
+const DeleteProduct = asyncHandler(async(req,res)=>{
+    const {id} = req.params 
+
+    const find =  await ProductModel.findById(id)
+
+    if(!find){
+        return res.status(403).json({message:"data is not exist"})
+    }
+    
+    await ProductModel.findByIdAndDelete(id)
+
+    return res.status(200).json({
+        message:"Product delete Successful"
+    })
+})
+
+const UpdateProduct = asyncHandler(async(req,res)=>{
+    const data = req.body
+    const {id} = req.params
+
+    const find = await ProductModel.findById(id)
+    if(!find){
+        return res.status(404).json({
+            message:"Product is not exist"
+        })
+    }
+    await ProductModel.findByIdAndUpdate(id,data)
+    return res.status(200).json({
+        message:"Product update Successful"
+    })
+})
+
+export {CreateProduct,GetProduct,AdminGetProduct,DeleteProduct,UpdateProduct}

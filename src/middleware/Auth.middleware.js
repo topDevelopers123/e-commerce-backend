@@ -10,7 +10,7 @@ import { UserModel } from "../model/user.model.js";
         const token = req.headers.authorization.replace("Bearer ","")
 
         const {id} = jwt.verify(token,process.env.SECRET_KEY)
-        const findUser = await UserModel.findById(id)
+        const findUser = await UserModel.findById(id).select("-password")
         if(!findUser){
             return res.status(404).json({
                 message:"invalid credential"
