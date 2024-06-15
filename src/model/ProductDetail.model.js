@@ -4,10 +4,10 @@ import { images } from "./Images.model.js";
 
 const ProductDetail = new Schema(
   {
-    product_id: {
-      type: Schema.Types.ObjectId,
-      ref: "Product",
-      required: true,
+    product_id:{
+      type:Schema.Types.ObjectId,
+      ref:"Product",
+      required:true
     },
     Size: {
       type: String,

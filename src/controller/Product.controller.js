@@ -1,3 +1,4 @@
+import { ProductDetailModel } from "../model/ProductDetail.model.js";
 import { ProductModel } from "../model/products.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
@@ -13,7 +14,7 @@ const CreateProduct = asyncHandler(async (req, res) => {
 });
 
 const GetProduct = asyncHandler(async (_, res) => {
-  const data = await ProductModel.find({});
+  const data = await ProductModel.find({}).populate("products_details");
 
   return res.status(200).json({
     message: "Data ",
@@ -41,6 +42,7 @@ const DeleteProduct = asyncHandler(async (req, res) => {
   }
 
   await ProductModel.findByIdAndDelete(id);
+  await ProductDetailModel.deleteMany({product_id:id})
 
   return res.status(200).json({
     message: "Product delete Successful",
