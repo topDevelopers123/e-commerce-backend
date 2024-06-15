@@ -41,10 +41,13 @@ const DeleteProductDetails = asyncHandler(async (req, res) => {
     return res.status(403).json({ message: "data is not exist" });
   }
 
-  const findProduct = await ProductModel.findById(find.products_details)
 
-  const update = findProduct.products_details.filter((item)=> item !== id)
-   await update.save()
+  const findProduct = await ProductModel.findById(find.product_id)
+
+
+  const update = findProduct.products_details.filter((item)=> new mongoose.Types.ObjectId(item).toHexString() !== id )
+
+  await ProductModel.findByIdAndUpdate(find.product_id,{products_details:update})
 
   await ProductDetailModel.findByIdAndDelete(id);
 
