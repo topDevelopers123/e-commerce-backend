@@ -8,7 +8,7 @@ const router = Router()
 router.route('/create').post(Authontication,ProductValidate,CreateProduct)
 router.route("/get").get(GetProduct)
 router.route("/admin-get").get(Authontication,AdminGetProduct)
-router.route("/delete/:id").delete(DeleteProduct)
+router.route("/delete/:id").delete(Authontication,DeleteProduct)
 router.route("/update/:id").put(Authontication,ProductValidate,UpdateProduct)
 
 
