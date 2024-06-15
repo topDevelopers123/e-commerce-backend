@@ -1,10 +1,14 @@
-import { ProductDetailModel } from "../model/ProductDetail.model";
+import { ProductDetailModel } from "../model/ProductDetail.model.js";
+import { ProductModel } from "../model/products.model.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 
 
 const  CreateProductDetails = asyncHandler(async(req,res)=>{
     const data = req.body
     
     const Create = await ProductDetailModel.create({...data,user_id:req.user?._id})
+
+    await ProductModel.findByIdAndUpdate(data.Product_id,{products_details:Create._id})
 
     return res.status(201).json({
         message:"Product Details Created Successful",
