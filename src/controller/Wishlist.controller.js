@@ -20,4 +20,34 @@ const CreateWishlist = asyncHandler(async(req,res)=>{
 })
 
 
-// const 
+const getWishlist = asyncHandler(async(req,res)=>{
+    const data  = await wishlistModel.find({}).populate("product_detail_id").populate("product_id")
+    return res.status(200).json({
+        message:"data",
+        data
+    })
+})
+
+const deleteWishlist = asyncHandler(async(req,res)=>{
+    const {id} = req.params
+    const find = await wishlistModel.findById(id)
+
+    if(!find){
+        return res.status(400).json({
+            message:"data is notv exist "
+        })
+    }
+
+    await wishlistModel.findByIdAndDelete(id)
+
+    return res.status(200).json({
+        message:"item remove to wishlist"
+    })
+})
+
+
+export {
+    CreateWishlist,
+    getWishlist,
+    deleteWishlist
+}
