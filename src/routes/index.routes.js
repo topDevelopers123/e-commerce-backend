@@ -8,6 +8,7 @@ import CategoryRoute from "./category.routes.js";
 import subCategory from "./subCategory.routes.js";
 import SubinnerCategory from "./subInnercategory.routes.js";
 import addressRoute from "./address.routes.js";
+import ProductDetailRoute from "./productDetails.routes.js"
 
 const router = Router();
 
@@ -18,5 +19,6 @@ router.use("/category", CategoryRoute);
 router.use("/sub-category", subCategory);
 router.use("/sub-inner-category", SubinnerCategory);
 router.use("/user-address", addressRoute);
+router.use("/product-details",ProductDetailRoute)
 
 export default router;
