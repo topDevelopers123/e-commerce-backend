@@ -35,13 +35,16 @@ const AdminGetProductDetails = asyncHandler(async (req, res) => {
 const DeleteProductDetails = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
-  const find = await ProductDetailModel.findById(id);
+  const find = await ProductModel.find({ products_details: id });
+  console.log(find);
+
+  // const find = await ProductDetailModel.findById(id);
 
   if (!find) {
     return res.status(403).json({ message: "data is not exist" });
   }
 
-  await ProductDetailModel.findByIdAndDelete(id);
+  // await ProductDetailModel.findByIdAndDelete(id);
 
   return res.status(200).json({
     message: "Product Details delete Successful",

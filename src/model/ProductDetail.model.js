@@ -1,8 +1,14 @@
 // local import
 import mongoose, { Schema } from "mongoose";
+import { images } from "./Images.model.js";
 
 const ProductDetail = new Schema(
   {
+    product_id: {
+      type: Schema.Types.ObjectId,
+      ref: "Product",
+      required: true,
+    },
     Size: {
       type: String,
       required: true,
@@ -12,7 +18,7 @@ const ProductDetail = new Schema(
       required: true,
     },
     image: {
-      type: [String],
+      type: [images],
     },
     MRP: {
       type: Number,

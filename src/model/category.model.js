@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-
+import { images } from "./Images.model.js";
 const category = new Schema(
   {
     category_name: {
@@ -8,7 +8,7 @@ const category = new Schema(
       trim: true,
     },
     image: {
-      type: String,
+      type: images,
     },
   },
   { timestamps: true }
