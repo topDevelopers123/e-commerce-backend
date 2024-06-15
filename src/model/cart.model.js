@@ -13,12 +13,12 @@ const cart = new Schema(
     },
     quantity: {
       type: Number,
-      require: true,
-      default: 1,
+      require: [true, "Quantity is required"],
     },
     user_id: {
       type: Schema.Types.ObjectId,
       ref: "User",
+      required:true
     },
   },
   { timestamps: true }
