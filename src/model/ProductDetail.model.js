@@ -1,5 +1,6 @@
 // local import
 import mongoose, { Schema } from "mongoose";
+import { images } from "./Images.model.js";
 
 const ProductDetail = new Schema(
   {
@@ -17,7 +18,7 @@ const ProductDetail = new Schema(
       required: true,
     },
     image: {
-      type: [String],
+      type: [images],
     },
     MRP: {
       type: Number,

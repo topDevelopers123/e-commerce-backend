@@ -1,5 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import bcrypt from "bcryptjs";
+import { images } from "./Images.model.js";
 import { SALT } from "../constant.js";
 
 const user = new Schema(
@@ -29,8 +30,8 @@ const user = new Schema(
       type: String,
       required: true,
     },
-    profile: {
-      type: String,
+    profile_image: {
+      type: images,
     },
   },
   { timestamps: true }
