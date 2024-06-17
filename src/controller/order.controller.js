@@ -1,4 +1,5 @@
 import { orderModel } from "../model/order.model.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 
 const CreateOrder = asyncHandler(async (req, res) => {
     const data = req.body;
@@ -12,7 +13,7 @@ const CreateOrder = asyncHandler(async (req, res) => {
 });
 
 
-const UpdateProduct = asyncHandler(async (req, res) => {
+const UpdateOrder = asyncHandler(async (req, res) => {
     const {status} = req.body;
     const { id } = req.params;
 
@@ -29,4 +30,4 @@ const UpdateProduct = asyncHandler(async (req, res) => {
 });
 
 
-export { CreateOrder, UpdateProduct }
+export { CreateOrder, UpdateOrder }
