@@ -1,30 +1,44 @@
+import mongoose from "mongoose";
 import { cartModel } from "../model/cart.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
 const AddToCart = asyncHandler(async (req, res) => {
-  const { _id } = req.user;
-  const data = req.body;
-  const find = await cartModel.find({ ...data, user_id: _id });
+  const { product_id, productDetails, quantity } = req.body;
+
+  const find = await cartModel.find({
+    product_id,
+    productDetails,
+    user_id: req.user._id,
+  });
   if (find.length > 0) {
     return res.status(400).json({ message: "item already added" });
   }
-  await cartModel.create({ ...data, user: _id });
+
+  await cartModel.create({
+    product_id,
+    productDetails,
+    quantity,
+    user_id: req.user._id,
+  });
 
   res.status(200).json({ message: "item added to cart" });
 });
 
-
-const AddQuantity = asyncHandler(async (req, res) => {
-  const id = req.params;
+const updateQuantity = asyncHandler(async (req, res) => {
+  const { id } = req.params;
   const { quantity } = req.body;
-  const findData = await cartModel.find({ product_id: data._id });
+  if (!(quantity && quantity > 0))
+    return res.status(400).json({ message: "quantity is required" });
+
+  const findData = await cartModel.find({ product_id: id });
+
   if (!findData) {
     return res.status(400).json({ message: "cannot add items in cart" });
   }
+
   await cartModel.findByIdAndUpdate(id, { quantity });
   res.status(200).json({ message: "updated quantity successfully" });
 });
-
 
 const RemoveProductFromCart = asyncHandler(async (req, res) => {
   const { id } = req.params;
@@ -38,7 +52,6 @@ const RemoveProductFromCart = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "item remove succesfully" });
 });
 
-
 const RemoveAllProduct = asyncHandler(async (req, res) => {
   const { _id } = req.user;
 
@@ -50,4 +63,4 @@ const RemoveAllProduct = asyncHandler(async (req, res) => {
   res.status(400).json({ message: "item do not exist in cart" });
 });
 
-export { AddToCart, RemoveProductFromCart, AddQuantity, RemoveAllProduct };
+export { AddToCart, RemoveProductFromCart, updateQuantity, RemoveAllProduct };

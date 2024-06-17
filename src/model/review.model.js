@@ -1,9 +1,9 @@
 import mongoose, { Schema } from "mongoose";
-
+import { images } from "./Images.model.js";
 const review = new Schema(
   {
     image: {
-      type: [String],
+      type: [images],
     },
     title: {
       type: String,

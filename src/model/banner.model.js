@@ -1,9 +1,10 @@
 import mongoose, { Schema } from "mongoose";
+import { images } from "./Images.model.js";
 
 const banner = new Schema(
   {
     image: {
-      type: [String],
+      type: [images],
     },
     user_id: {
       type: Schema.Types.ObjectId,
