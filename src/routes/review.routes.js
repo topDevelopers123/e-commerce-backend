@@ -1,13 +1,10 @@
 import { Router } from "express";
 import { Authontication } from "../middleware/Auth.middleware.js";
-import { CreateProduct, DeleteProduct } from "../controller/Review.controller.js";
+import { CreateReview, DeleteReview } from "../controller/Review.controller.js";
 
+const router = Router();
 
-const router = Router()
+router.route("/add").post(Authontication, CreateReview);
+router.route("/delete/:id").delete(Authontication, DeleteReview);
 
-
-router.route("/create").post(Authontication,CreateProduct)
-router.route("/delete/:id").put(Authontication,DeleteProduct)
-
-
-export default router
+export default router;
