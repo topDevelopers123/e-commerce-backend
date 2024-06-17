@@ -5,10 +5,62 @@ const addAddress = asyncHandler(async (req, res) => {
   const data = req.body;
   const id = req.user._id;
 
-  console.log(data);
+  const find = await addressModel.find({ user_id: req.user._id });
+  if (find.length > 0) {
+    return res.status(400).json({
+      message: "address already exist",
+    });
+  }
+
+  const result = await addressModel.create({ user_id: req.user._id, ...data });
   res.status(200).json({
     message: "address created successful",
+    result,
   });
 });
 
-export { addAddress };
+const getAddress = asyncHandler(async (req, res) => {
+  const find = await addressModel.find({ user_id: req.user._id });
+
+  if (!(find.length > 0)) {
+    return res.status(400).json({
+      message: "address not found",
+    });
+  }
+  res.status(200).json({
+    message: "address found",
+    find,
+  });
+});
+
+const updateAddress = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const data = req.body;
+
+  const find = await addressModel.findById(id);
+  if (!find) {
+    return res.status(400).json({
+      message: "address not found",
+    });
+  }
+  const result = await addressModel.findByIdAndUpdate(id, data);
+  res.status(200).json({
+    message: "address updated successful",
+  });
+});
+
+const deleteAddress = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const find = await addressModel.findById(id);
+  if (!find) {
+    return res.status(400).json({
+      message: "address not found",
+    });
+  }
+  const result = await addressModel.findByIdAndDelete(id);
+  res.status(200).json({
+    message: "address deleted successful",
+  });
+});
+
+export { addAddress, getAddress, updateAddress, deleteAddress };
