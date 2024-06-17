@@ -67,4 +67,62 @@ const UpdateCategory = asyncHandler(async (req, res) => {
   });
 });
 
-export { CreateCategory, GetCategory, DeleteCategory, UpdateCategory };
+const GetCategorys = asyncHandler(async(req,res)=>{
+  const data = await categoryModel.aggregate([
+    {
+      $lookup:{
+        from:"subcategories",
+        localField:"_id",
+        foreignField:"parent_category",
+        as:"subCategory",
+        pipeline:[
+          {
+            $lookup:{
+              from:"subinnercategories",
+              localField:"_id",
+              foreignField:"parent_category2",
+              as:"InnerCategory",
+              pipeline:[
+                {
+                  $project:{
+                    sub_inner_category_name:1,
+                  }
+
+                }
+              ]
+            }
+          },
+          {
+            $addFields:{
+              InnerCategory:"$InnerCategory"
+            }
+          },
+          {
+            $project:{
+              sub_category_name:1,
+              InnerCategory:1
+            }
+          }
+        ]
+      }
+    },
+    {
+      $addFields:{
+        Subcategory:"$subCategory"
+      }
+    },
+    {
+      $project:{
+        category_name:1,
+        Subcategory:1
+      }
+    }
+  ])
+
+  return res.status(200).json({
+    message:"data",
+    data:data[0]
+  })
+})
+
+export { CreateCategory, GetCategory, DeleteCategory, UpdateCategory ,GetCategorys};
