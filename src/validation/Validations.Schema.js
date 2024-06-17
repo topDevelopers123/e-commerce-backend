@@ -46,18 +46,14 @@ export const addressCheck = vine.object({
   area: vine.string().minLength(5),
   house_no: vine.string().minLength(5),
   pincode: vine.string().minLength(3),
-  user_id: vine.string().minLength(8),
 });
 
-
 export const ProductDetail = vine.object({
-  
-    product_id:vine.string().minLength(3),
-    Size: vine.string().minLength(1),
-    color:vine.string().minLength(2),
-    MRP: vine.number().min(1),
-    sellingPrice:vine.number().min(1),
-    selling_quantity:vine.number().min(1),
-    inStock: vine.number().min(1),
-  
-})
+  product_id: vine.string().minLength(3),
+  Size: vine.string().minLength(1),
+  color: vine.string().minLength(2),
+  MRP: vine.number().min(1),
+  sellingPrice: vine.number().min(1),
+  selling_quantity: vine.number().min(1),
+  inStock: vine.number().min(1),
+});
