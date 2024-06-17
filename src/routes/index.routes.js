@@ -11,6 +11,7 @@ import addressRoute from "./address.routes.js";
 import ProductDetailRoute from "./productDetails.routes.js";
 import WishListRoute from "./wishlist.routes.js";
 import ReviewRoute from "./review.routes.js";
+import OrderRouter from "./Order.routes.js"
 
 const router = Router();
 
@@ -24,5 +25,6 @@ router.use("/user-address", addressRoute);
 router.use("/product-details", ProductDetailRoute);
 router.use("/wishlist", WishListRoute);
 router.use("/review", ReviewRoute);
+router.use("/order", OrderRouter)
 
 export default router;
