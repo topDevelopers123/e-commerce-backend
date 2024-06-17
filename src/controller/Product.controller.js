@@ -119,7 +119,6 @@ const AdminGetProduct = asyncHandler(async (req, res) => {
       },
     },
   ]);
-  console.log(data);
   return res.status(200).json({
     message: "data",
     data,
