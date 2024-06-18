@@ -3,6 +3,7 @@ import { UserModel } from "../model/user.model.js";
 import { SendMail } from "../utils/EmailHandler.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import jwt from "jsonwebtoken";
+import { ImageUpload, deleteImage } from "../utils/ImageHandler.js";
 
 let ChangePasswordOtp = null;
 
@@ -149,6 +150,21 @@ const CrateNewPassword = asyncHandler(async (req, res) => {
   });
 });
 
+
+const Profile = asyncHandler(async(req,res)=>{
+  const file = req.file
+  if(!file){
+    return res.status(400).json({
+      message:"Image is required"
+    })
+  }
+  const data = await ImageUpload(file)
+  const update = await UserModel.findByIdAndUpdate(req.user?._id, { profile_image :data})
+  return res.status(200).json({
+    message:"Profile uploaded successful",
+  })
+})
+
 export {
   createUser,
   loginUser,
@@ -156,4 +172,5 @@ export {
   CheckOtp,
   newPassword,
   CrateNewPassword,
+  Profile
 };
