@@ -31,10 +31,10 @@ const GetProduct = asyncHandler(async (_, res) => {
               selling_quantity: 1,
               inStock: 1,
               image: 1,
-            }
-          }
-        ]
-      }
+            },
+          },
+        ],
+      },
     },
     {
       $lookup: {
@@ -53,16 +53,16 @@ const GetProduct = asyncHandler(async (_, res) => {
                 {
                   $project: {
                     name: 1,
-                    email: 1
-                  }
-                }
-              ]
-            }
+                    email: 1,
+                  },
+                },
+              ],
+            },
           },
           {
             $addFields: {
-              UserDetails: "$UserDetail"
-            }
+              UserDetails: "$UserDetail",
+            },
           },
           {
             $project: {
@@ -73,10 +73,10 @@ const GetProduct = asyncHandler(async (_, res) => {
               product_id: 1,
               rating: 1,
               image: 1,
-            }
-          }
-        ]
-      }
+            },
+          },
+        ],
+      },
     },
     {
       $project: {
@@ -138,7 +138,7 @@ const DeleteProduct = asyncHandler(async (req, res) => {
   }
 
   await ProductModel.findByIdAndDelete(id);
-  await ProductDetailModel.deleteMany({ product_id: id })
+  await ProductDetailModel.deleteMany({ product_id: id });
 
   return res.status(200).json({
     message: "Product delete Successful",
