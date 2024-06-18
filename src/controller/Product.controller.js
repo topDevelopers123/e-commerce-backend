@@ -21,7 +21,7 @@ const GetProduct = asyncHandler(async (_, res) => {
         localField: "_id",
         foreignField: "product_id",
         as: "ProductDetails",
-        pipeline:[
+        pipeline: [
           {
             $project: {
               Size: 1,
@@ -92,10 +92,10 @@ const GetProduct = asyncHandler(async (_, res) => {
         zonal_deadline: 1,
         national_deadline: 1,
         ProductDetails: 1,
-        Review:1
+        Review: 1
       }
     }
-   
+
   ])
 
   return res.status(200).json({
@@ -107,7 +107,21 @@ const GetProduct = asyncHandler(async (_, res) => {
 const AdminGetProduct = asyncHandler(async (req, res) => {
   const { _id } = req.user;
 
-  const data = await ProductModel.find({ user_id: _id });
+  const data = await ProductModel.aggregate([
+    {
+      $match: {
+        user_id: _id
+      }
+    },
+    {
+      $lookup:{
+        from: "productdetails",
+        localField:"_id",
+        foreignField:"product_id",
+        as:"adminProduct"
+      }
+    }
+  ])
   return res.status(200).json({
     message: "data",
     data,
