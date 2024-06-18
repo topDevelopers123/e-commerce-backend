@@ -87,7 +87,7 @@ const SendOtp = asyncHandler(async (req, res) => {
     email,
     expire: Date.now() + 1000 * 60 * 5,
     Sub: "Reset password",
-    text: `your requested otp reset ,please do not share otp \n ${OTP}  \n otp is valid 30sec  `,
+    text: `your requested otp reset ,please do not share otp \n ${OTP}  \n otp is valid 5 min `,
   };
   SendMail(ChangePasswordOtp);
 
