@@ -12,7 +12,7 @@ router.route("/send-otp").post(SendOtp)
 router.route("/verify-otp").post(CheckOtp)
 router.route("/new-password").post(newPassword)
 router.route("/password").post(Authontication, CrateNewPassword)
-router.route("/profile").post(upload.single("image"), Profile)
+router.route("/profile").post(Authontication,upload.single("image"), Profile)
 
 
 

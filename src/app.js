@@ -14,7 +14,7 @@ app.use(cors())
 
 // local imports 
 import routes from "./routes/index.routes.js"
-
+import { deleteImage } from "./utils/ImageHandler.js";
 
 app.use("/api/v1",routes)
 
