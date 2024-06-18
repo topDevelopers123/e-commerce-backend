@@ -3,6 +3,7 @@ import { UserModel } from "../model/user.model.js";
 import { SendMail } from "../utils/EmailHandler.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import jwt from "jsonwebtoken";
+import { ImageUpload } from "../utils/ImageHandler.js";
 
 let ChangePasswordOtp = null;
 
@@ -149,6 +150,12 @@ const CrateNewPassword = asyncHandler(async (req, res) => {
   });
 });
 
+
+const Profile = asyncHandler(async(req,res)=>{
+  const file = req.file
+  ImageUpload(file)
+})
+
 export {
   createUser,
   loginUser,
@@ -156,4 +163,5 @@ export {
   CheckOtp,
   newPassword,
   CrateNewPassword,
+  Profile
 };
