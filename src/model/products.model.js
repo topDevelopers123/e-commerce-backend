@@ -60,10 +60,6 @@ const products = new Schema(
       trim: true,
       required: true,
     },
-    products_details:{
-      type:[Schema.Types.ObjectId],
-      ref:"ProductDetail"
-    }
   },
   { timestamps: true }
 );

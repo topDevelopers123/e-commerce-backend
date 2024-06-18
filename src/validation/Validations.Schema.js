@@ -57,3 +57,8 @@ export const ProductDetail = vine.object({
   selling_quantity: vine.number().min(1),
   inStock: vine.number().min(1),
 });
+
+export const OrderDetail = vine.object({
+  payment_status: vine.string().minLength(3),
+  status: vine.string().minLength(3),
+});
