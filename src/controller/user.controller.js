@@ -4,18 +4,13 @@ import { SendMail } from "../utils/EmailHandler.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import jwt from "jsonwebtoken";
 
+let ChangePasswordOtp = null;
 
-let ChangePasswordOtp = null
-
-let OTP = null
+let OTP = null;
 
 const Generatetoken = async (data) => {
-
-  return jwt.sign(
-    { id: data._id, email: data.email },
-    process.env.SECRET_KEY
-  );
-}
+  return jwt.sign({ id: data._id, email: data.email }, process.env.SECRET_KEY);
+};
 
 const createUser = asyncHandler(async (req, res) => {
   const data = req.body;
@@ -31,7 +26,7 @@ const createUser = asyncHandler(async (req, res) => {
   const Create = await UserModel.create(data);
   Create.password = null;
 
-  const token = await Generatetoken(Create)
+  const token = await Generatetoken(Create);
 
   return res.status(201).json({
     message: "User register successful",
@@ -55,8 +50,8 @@ const loginUser = asyncHandler(async (req, res) => {
 
   if (!findUser) {
     return res.status(404).json({
-      message: "User not exist"
-    })
+      message: "User not exist",
+    });
   }
 
   const check = await findUser?.Checkpassword(password);
@@ -69,7 +64,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
   findUser.password = null;
 
-  const token = await Generatetoken(findUser)
+  const token = await Generatetoken(findUser);
 
   return res.status(200).json({
     message: "Login Successful",
@@ -79,78 +74,86 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 const SendOtp = asyncHandler(async (req, res) => {
-  const { email } = req.body
-  const find = await UserModel.findOne({ email })
+  const { email } = req.body;
+
+  const find = await UserModel.findOne({ email });
   if (!find) {
     return res.status(400).json({
-      message: "User not exist"
-    })
+      message: "User not exist",
+    });
   }
-  OTP = Math.floor(1000 + Math.random() * 9000)
-  ChangePasswordOtp = { email, expire: Date.now() + 1000 * 60 * 5, Sub: "Reset password", text: `your requested otp reset ,please do not share otp \n ${OTP}  \n otp is valid 30sec  ` }
-  SendMail(ChangePasswordOtp)
+  OTP = Math.floor(1000 + Math.random() * 9000);
+  ChangePasswordOtp = {
+    email,
+    expire: Date.now() + 1000 * 60 * 5,
+    Sub: "Reset password",
+    text: `your requested otp reset ,please do not share otp \n ${OTP}  \n otp is valid 30sec  `,
+  };
+  SendMail(ChangePasswordOtp);
 
   return res.status(200).json({
-    message: "OTP Sent"
-  })
-})
+    message: "OTP Sent",
+  });
+});
 
 const CheckOtp = asyncHandler(async (req, res) => {
-  const { check_otp } = req.body
+  const { check_otp } = req.body;
 
   if (ChangePasswordOtp.expire < Date.now()) {
     return res.status(403).json({
-      message: "OTP Expire"
-    })
+      message: "OTP Expire",
+    });
   }
 
   if (check_otp !== OTP) {
     return res.status(400).json({
-      message: "Invalid otp"
-    })
+      message: "Invalid otp",
+    });
   }
 
   return res.status(200).json({
     message: "verify",
-    redirect: true
-  })
-
-})
+    redirect: true,
+  });
+});
 
 const newPassword = asyncHandler(async (req, res) => {
-  const { password, email } = req.body
+  const { password, email } = req.body;
 
-  const find = await UserModel.findOne({ email })
-  find.password = password
-  find.save()
+  const find = await UserModel.findOne({ email });
+  find.password = password;
+  find.save();
 
   return res.status(200).json({
-    message: "password Created successful"
-  })
+    message: "password Created successful",
+  });
+});
 
-})
+const CrateNewPassword = asyncHandler(async (req, res) => {
+  const { oldpassword, newPassword } = req.body;
 
-const CrateNewPassword = asyncHandler(async(req,res)=>{
-  const {oldpassword ,newPassword} = req.body
+  const find = await UserModel.findById(req.user?._id);
 
-  const find = await UserModel.findById(req.user?._id)
-
-  const result = find.Checkpassword(oldpassword)
-
-  if(!result){
+  const result = await find.Checkpassword(oldpassword);
+  if (!result) {
     return res.status(400).json({
-      messages:"Old Password is Wrong"
-    })
+      messages: "Old Password is Wrong",
+    });
   }
 
-  find.password = newPassword
-  find.save()
+  find.password = newPassword;
+  find.save();
 
   return res.status(200).json({
-    message:"New Password Created"
-  })
-})
+    message: "New Password Created",
+  });
+});
 
-
-
-export { createUser, loginUser, SendOtp, CheckOtp, newPassword, CrateNewPassword };
+export {
+  createUser,
+  loginUser,
+  SendOtp,
+  CheckOtp,
+  newPassword,
+  CrateNewPassword,
+};
