@@ -92,10 +92,11 @@ const GetProduct = asyncHandler(async (_, res) => {
         zonal_deadline: 1,
         national_deadline: 1,
         ProductDetails: 1,
-        Review: 1,
-      },
-    },
-  ]);
+        Review: 1
+      }
+    }
+
+  ])
 
   return res.status(200).json({
     message: "Data ",
@@ -108,17 +109,19 @@ const AdminGetProduct = asyncHandler(async (req, res) => {
 
   const data = await ProductModel.aggregate([
     {
-      $match: { user_id: _id },
+      $match: {
+        user_id: _id
+      }
     },
     {
-      $lookup: {
+      $lookup:{
         from: "productdetails",
-        localField: "_id",
-        foreignField: "product_id",
-        as: "adminProduct",
-      },
-    },
-  ]);
+        localField:"_id",
+        foreignField:"product_id",
+        as:"adminProduct"
+      }
+    }
+  ])
   return res.status(200).json({
     message: "data",
     data,
