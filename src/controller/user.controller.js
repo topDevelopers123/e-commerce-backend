@@ -1,9 +1,16 @@
+import { messages } from "@vinejs/vine/defaults";
 import { UserModel } from "../model/user.model.js";
+import { SendMail } from "../utils/EmailHandler.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import jwt from "jsonwebtoken";
 
-const Generatetoken =async(data)=>{
- 
+
+let ChangePasswordOtp = null
+
+let OTP = null
+
+const Generatetoken = async (data) => {
+
   return jwt.sign(
     { id: data._id, email: data.email },
     process.env.SECRET_KEY
@@ -46,9 +53,9 @@ const loginUser = asyncHandler(async (req, res) => {
     $or: [{ email: email }, { phone: email }],
   });
 
-  if(!findUser){
+  if (!findUser) {
     return res.status(404).json({
-      message:"User not exist"
+      message: "User not exist"
     })
   }
 
@@ -71,15 +78,79 @@ const loginUser = asyncHandler(async (req, res) => {
   });
 });
 
-const Query = async (req,res) => {
-
-  try{
-    const data = req.query
-    console.log(data)
+const SendOtp = asyncHandler(async (req, res) => {
+  const { email } = req.body
+  const find = await UserModel.findOne({ email })
+  if (!find) {
+    return res.status(400).json({
+      message: "User not exist"
+    })
   }
-  catch(error){
-    console.log(err)
-  }
-}
+  OTP = Math.floor(1000 + Math.random() * 9000)
+  ChangePasswordOtp = { email, expire: Date.now() + 1000 * 60 * 5, Sub: "Reset password", text: `your requested otp reset ,please do not share otp \n ${OTP}  \n otp is valid 30sec  ` }
+  SendMail(ChangePasswordOtp)
 
-export { createUser, loginUser ,Query};
+  return res.status(200).json({
+    message: "OTP Sent"
+  })
+})
+
+const CheckOtp = asyncHandler(async (req, res) => {
+  const { check_otp } = req.body
+
+  if (ChangePasswordOtp.expire < Date.now()) {
+    return res.status(403).json({
+      message: "OTP Expire"
+    })
+  }
+
+  if (check_otp !== OTP) {
+    return res.status(400).json({
+      message: "Invalid otp"
+    })
+  }
+
+  return res.status(200).json({
+    message: "verify",
+    redirect: true
+  })
+
+})
+
+const newPassword = asyncHandler(async (req, res) => {
+  const { password, email } = req.body
+
+  const find = await UserModel.findOne({ email })
+  find.password = password
+  find.save()
+
+  return res.status(200).json({
+    message: "password Created successful"
+  })
+
+})
+
+const CrateNewPassword = asyncHandler(async(req,res)=>{
+  const {oldpassword ,newPassword} = req.body
+
+  const find = await UserModel.findById(req.user?._id)
+
+  const result = find.Checkpassword(oldpassword)
+
+  if(!result){
+    return res.status(400).json({
+      messages:"Old Password is Wrong"
+    })
+  }
+
+  find.password = newPassword
+  find.save()
+
+  return res.status(200).json({
+    message:"New Password Created"
+  })
+})
+
+
+
+export { createUser, loginUser, SendOtp, CheckOtp, newPassword, CrateNewPassword };
