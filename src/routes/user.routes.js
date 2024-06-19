@@ -1,5 +1,5 @@
 import { Router } from "express";
-import {  CheckOtp, CrateNewPassword, Profile, SendOtp, createUser, loginUser, newPassword } from "../controller/user.controller.js";
+import {  CheckOtp, CrateNewPassword, GetOrder, Profile, SendOtp, createUser, loginUser, newPassword } from "../controller/user.controller.js";
 import { Authontication } from "../middleware/Auth.middleware.js";
 import { upload } from "../middleware/multer.middleware.js";
 import { RegisterValidate } from "../helper/index.helper.js";
@@ -13,6 +13,7 @@ router.route("/verify-otp").post(CheckOtp)
 router.route("/new-password").post(newPassword)
 router.route("/password").post(Authontication, CrateNewPassword)
 router.route("/profile").post(Authontication,upload.single("image"), Profile)
+router.route("/get-order").get(Authontication,GetOrder)
 
 
 
