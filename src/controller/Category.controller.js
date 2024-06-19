@@ -2,9 +2,19 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { categoryModel } from "../model/category.model.js";
 import { subCategoryModel } from "../model/sub_category.model.js";
 import { subInnerCategoryModel } from "../model/sub_inner_category.model.js";
+import { ImageUpload, deleteImage } from "../utils/ImageHandler.js";
+import { upload } from "../middleware/multer.middleware.js";
 
 const CreateCategory = asyncHandler(async (req, res) => {
   const data = req.body;
+  const files = req.file;
+
+  if (!files || files.length === 0) {
+    return res.status(400).json({
+      message: "Image is required",
+    });
+  }
+
   if (!data.category_name) {
     return res.status(400).json({
       message: "Category name is required",
@@ -12,13 +22,15 @@ const CreateCategory = asyncHandler(async (req, res) => {
   }
 
   const find = await categoryModel.find(data);
-  if (find.length >0) {
+  if (find.length > 0) {
     return res.status(408).json({
       message: "Category Already exist",
     });
   }
 
-  const create = await categoryModel.create(data);
+  const img = await ImageUpload(files);
+
+  const create = await categoryModel.create({ ...data, image: img });
   return res.status(200).json({
     message: "Category Created successful",
   });
@@ -42,6 +54,11 @@ const DeleteCategory = asyncHandler(async (req, res) => {
       messages: "Category is not exist",
     });
   }
+  if (find?.image?.image_id) {
+    await deleteImage(find?.image?.image_id);
+  }
+
+  await subInnerCategoryModel.deleteMany({ parent_category2: id });
   await subInnerCategoryModel.deleteMany({ parent_category1: id });
   await subCategoryModel.deleteMany({ parent_category: id });
   await categoryModel.findByIdAndDelete(id);
@@ -53,6 +70,7 @@ const DeleteCategory = asyncHandler(async (req, res) => {
 
 const UpdateCategory = asyncHandler(async (req, res) => {
   const data = req.body;
+  const files = req.file;
   const { id } = req.params;
 
   const find = await categoryModel.findById(id);
@@ -61,68 +79,86 @@ const UpdateCategory = asyncHandler(async (req, res) => {
       message: "Category is not exist",
     });
   }
-  await categoryModel.findByIdAndUpdate(id, data);
+  if (!files || files.length === 0) {
+    return res.json({
+      message: "image is required",
+    });
+  }
+  if (find?.image?.image_id) {
+    await deleteImage(find?.image?.image_id);
+    const img = await ImageUpload(files);
+    await categoryModel.findByIdAndUpdate(id, { ...data, image: img });
+  } else {
+    const img = await ImageUpload(files);
+    await categoryModel.findByIdAndUpdate(id, { ...data, image: img });
+  }
+
   return res.status(200).json({
     message: "Category updated successful",
   });
 });
 
-const GetCategorys = asyncHandler(async(req,res)=>{
+const GetCategorys = asyncHandler(async (req, res) => {
   const data = await categoryModel.aggregate([
     {
-      $lookup:{
-        from:"subcategories",
-        localField:"_id",
-        foreignField:"parent_category",
-        as:"subCategory",
-        pipeline:[
+      $lookup: {
+        from: "subcategories",
+        localField: "_id",
+        foreignField: "parent_category",
+        as: "subCategory",
+        pipeline: [
           {
-            $lookup:{
-              from:"subinnercategories",
-              localField:"_id",
-              foreignField:"parent_category2",
-              as:"InnerCategory",
-              pipeline:[
+            $lookup: {
+              from: "subinnercategories",
+              localField: "_id",
+              foreignField: "parent_category2",
+              as: "InnerCategory",
+              pipeline: [
                 {
-                  $project:{
-                    sub_inner_category_name:1,
-                  }
-
-                }
-              ]
-            }
+                  $project: {
+                    sub_inner_category_name: 1,
+                  },
+                },
+              ],
+            },
           },
           {
-            $addFields:{
-              InnerCategory:"$InnerCategory"
-            }
+            $addFields: {
+              InnerCategory: "$InnerCategory",
+            },
           },
           {
-            $project:{
-              sub_category_name:1,
-              InnerCategory:1
-            }
-          }
-        ]
-      }
+            $project: {
+              sub_category_name: 1,
+              InnerCategory: 1,
+            },
+          },
+        ],
+      },
     },
     {
-      $addFields:{
-        Subcategory:"$subCategory"
-      }
+      $addFields: {
+        Subcategory: "$subCategory",
+      },
     },
     {
-      $project:{
-        category_name:1,
-        Subcategory:1
-      }
-    }
-  ])
+      $project: {
+        category_name: 1,
+        Subcategory: 1,
+      },
+    },
+  ]);
 
   return res.status(200).json({
-    message:"data",
-    data:data[0]
-  })
-})
+    message: "data",
+    data: data[0],
+  });
+});
 
-export { CreateCategory, GetCategory, DeleteCategory, UpdateCategory ,GetCategorys};
+export {
+  CreateCategory,
+  GetCategory,
+  DeleteCategory,
+  UpdateCategory,
+  GetCategorys,
+};
