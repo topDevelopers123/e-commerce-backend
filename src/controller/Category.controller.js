@@ -121,7 +121,7 @@ const GetCategorys = asyncHandler(async(req,res)=>{
 
   return res.status(200).json({
     message:"data",
-    data:data[0]
+    data
   })
 })
 
