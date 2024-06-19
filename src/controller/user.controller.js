@@ -158,6 +158,12 @@ const Profile = asyncHandler(async(req,res)=>{
       message:"Image is required"
     })
   }
+
+  const oldFile = req?.user?.profile_image?.image_id;
+  if (oldFile) {
+    await deleteImage(oldFile);
+  }
+
   const data = await ImageUpload(file)
   const update = await UserModel.findByIdAndUpdate(req.user?._id, { profile_image :data})
   return res.status(200).json({
