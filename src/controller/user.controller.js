@@ -270,7 +270,7 @@ const GetOrder = asyncHandler(async(req,res)=>{
         UserOrder:1
       }
     }
-  ])
+  ]).sort({ _id: -1 })
   return res.status(200).json({
     message:"order",
     data
