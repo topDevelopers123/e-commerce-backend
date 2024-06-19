@@ -264,6 +264,11 @@ const GetOrder = asyncHandler(async(req,res)=>{
 
         ]
       }
+    },
+    {
+      $project:{
+        UserOrder:1
+      }
     }
   ])
   return res.status(200).json({

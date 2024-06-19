@@ -114,7 +114,8 @@ const GetCategorys = asyncHandler(async(req,res)=>{
     {
       $project:{
         category_name:1,
-        Subcategory:1
+        Subcategory:1,
+        image:1,
       }
     }
   ])
