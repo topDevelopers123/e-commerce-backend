@@ -54,7 +54,6 @@ const DeleteBanner = asyncHandler(async (req, res) => {
       message: "Banner not exist",
     });
   }
-  console.log(find?.image?.image_id);
   await deleteImage(find?.image?.image_id);
   return res.status(200).json({
     message: "Banner deleted successful",
