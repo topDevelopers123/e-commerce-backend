@@ -9,6 +9,7 @@ const category = new Schema(
     },
     image: {
       type: images,
+      required:true
     },
   },
   { timestamps: true }
