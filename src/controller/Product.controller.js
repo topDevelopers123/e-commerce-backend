@@ -1,5 +1,6 @@
 import { ProductDetailModel } from "../model/ProductDetail.model.js";
 import { ProductModel } from "../model/products.model.js";
+import { deleteImage } from "../utils/ImageHandler.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
 const CreateProduct = asyncHandler(async (req, res) => {
@@ -92,11 +93,10 @@ const GetProduct = asyncHandler(async (_, res) => {
         zonal_deadline: 1,
         national_deadline: 1,
         ProductDetails: 1,
-        Review: 1
-      }
-    }
-
-  ])
+        Review: 1,
+      },
+    },
+  ]);
 
   return res.status(200).json({
     message: "Data ",
@@ -110,17 +110,73 @@ const AdminGetProduct = asyncHandler(async (req, res) => {
   const data = await ProductModel.aggregate([
     {
       $match: {
-        user_id: _id
-      }
+        user_id: _id,
+      },
     },
-    {
-      $lookup:{
-        from: "productdetails",
-        localField:"_id",
-        foreignField:"product_id",
-        as:"adminProduct"
+      {
+        $lookup: {
+          from: "categories",
+          foreignField: "_id",
+          localField: "category",
+          as: "category",
+          pipeline: [
+            {
+              $project: {
+                category_name: 1,
+              }
+            }
+          ]
+        }
+      },
+      {
+        $lookup: {
+          from: "subcategories",
+          foreignField: "_id",
+          localField: "sub_category",
+          as: "sub_category",
+          pipeline: [
+            {
+              $project: {
+                sub_category_name: 1,
+              }
+            }
+          ]
+        }
+      },
+      {
+        $lookup: {
+          from: "subinnercategories",
+          foreignField: "_id",
+          localField: "sub_inner_category",
+          as: "sub_inner_category",
+          pipeline: [
+            {
+              $project: {
+                sub_inner_category_name: 1,
+              }
+            }
+          ]
+        }
+      },
+      {
+        $lookup:{
+          from: "productdetails",
+          foreignField:"product_id",
+          localField:"_id",
+          as:"ProductDetail"
+        }
       }
-    }
+      
+      
+    
+    // {
+    //   $lookup:{
+    //     from: "productdetails",
+    //     localField:"_id",
+    //     foreignField:"product_id",
+    //     as:"adminProduct"
+    //   }
+    // }
   ])
   return res.status(200).json({
     message: "data",
@@ -132,11 +188,18 @@ const DeleteProduct = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
   const find = await ProductModel.findById(id);
-
+  console.log(find);
   if (!find) {
     return res.status(403).json({ message: "data is not exist" });
   }
 
+  const findDetail = await ProductDetailModel.find({product_id:id})
+ 
+  for(const image of findDetail){
+    for(const file of image.image){
+      await deleteImage(file?.image_id)
+    }
+  }
   await ProductModel.findByIdAndDelete(id);
   await ProductDetailModel.deleteMany({ product_id: id });
 

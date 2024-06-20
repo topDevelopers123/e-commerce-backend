@@ -171,6 +171,112 @@ const Profile = asyncHandler(async(req,res)=>{
   })
 })
 
+const GetOrder = asyncHandler(async(req,res)=>{
+  const data = await UserModel.aggregate([
+    {
+      $match:{
+        _id:req.user._id
+      }
+    },
+    {
+      $lookup: {
+        from: "orders",
+        localField: "_id",
+        foreignField: "user_id",
+        as: "UserOrder",
+        pipeline:[
+          {
+            $lookup:{
+              from: "products",
+              localField:"product_id",
+              foreignField:"_id",
+              as:"Product",
+              pipeline:[
+                {
+                  $project:{
+                    title: 1,
+                    description: 1,
+                    local_charges: 1,
+                    zonal_charges: 1,
+                    national_charges: 1,
+                    local_deadline: 1,
+                    zonal_deadline: 1,
+                    national_deadline: 1,
+                  }
+                }
+              ]
+            }
+          },
+          {
+            $lookup: {
+              from: "productdetails",
+              localField: "product_detail_id",
+              foreignField: "_id",
+              as: "ProductDetails",
+              pipeline: [
+                {
+                  $project: {
+                    Size: 1,
+                    color:1,
+                    MRP: 1,
+                    sellingPrice: 1,
+                    selling_quantity: 1,
+                    inStock:1,
+                    image:1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            $lookup: {
+              from: "addresses",
+              localField: "address_id",
+              foreignField: "_id",
+              as: "UserAddress",
+              pipeline:[
+                {
+                  $project:{
+                    fullname: 1,
+                    phone: 1,
+                    phone2: 1,
+                    country: 1,
+                    state: 1,
+                    city: 1,
+                    area: 1,
+                    house_no: 1,
+                    pincode: 1,
+                  }
+                }
+              ]
+            }
+          },
+          {
+            $project:{
+              payment_status:1,
+              status:1,
+              createdAt: 1,
+              Product:1,
+              ProductDetails:1,
+              UserAddress:1
+          }
+          }
+
+        ]
+      }
+    },
+    {
+      $project:{
+        UserOrder:1
+      }
+    }
+  ]).sort({ _id: -1 })
+  return res.status(200).json({
+    message:"order",
+    data
+  })
+})
+
 export {
   createUser,
   loginUser,
@@ -178,5 +284,6 @@ export {
   CheckOtp,
   newPassword,
   CrateNewPassword,
-  Profile
+  Profile,
+  GetOrder
 };

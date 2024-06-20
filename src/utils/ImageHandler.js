@@ -6,11 +6,10 @@ const storage = new Storage({
     keyFilename: "keys.json"
 })
 
-const bucketName = "mayavi_fashion1"
 
 export async function ImageUpload(file) {
     try {
-        const bucket = storage.bucket(bucketName);
+        const bucket = storage.bucket(process.env.bucketName);
         const destination = `images/${file.filename}`;
 
         const data = await bucket.upload(file.path, {
@@ -34,8 +33,8 @@ export async function ImageUpload(file) {
 
 export async function deleteImage(fileName) {
     try {
-        await storage.bucket(bucketName).file(fileName).delete();
-        console.log(`File ${fileName} deleted successfully.`);
+        await storage.bucket(process.env.bucketName).file(fileName).delete();
+        return "deleted successfully"
     } catch (err) {
         console.error('Error deleting file:', err);
         throw new Error('Failed to delete image');

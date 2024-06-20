@@ -4,7 +4,7 @@ import { images } from "./Images.model.js";
 const banner = new Schema(
   {
     image: {
-      type: [images],
+      type: images,
     },
     user_id: {
       type: Schema.Types.ObjectId,

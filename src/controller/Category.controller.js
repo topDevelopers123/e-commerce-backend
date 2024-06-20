@@ -142,16 +142,17 @@ const GetCategorys = asyncHandler(async (req, res) => {
       },
     },
     {
-      $project: {
-        category_name: 1,
-        Subcategory: 1,
-      },
-    },
-  ]);
+      $project:{
+        category_name:1,
+        Subcategory:1,
+        image:1,
+      }
+    }
+  ])
 
   return res.status(200).json({
     message: "data",
-    data: data[0],
+    data,
   });
 });
 
