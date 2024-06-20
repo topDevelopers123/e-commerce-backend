@@ -3,7 +3,7 @@ import { categoryModel } from "../model/category.model.js";
 import { subCategoryModel } from "../model/sub_category.model.js";
 import { subInnerCategoryModel } from "../model/sub_inner_category.model.js";
 import { ImageUpload, deleteImage } from "../utils/ImageHandler.js";
-import fs from "fs"
+import fs from "fs";
 
 const CreateCategory = asyncHandler(async (req, res) => {
   const data = req.body;
@@ -75,33 +75,25 @@ const UpdateCategory = asyncHandler(async (req, res) => {
 
   const find = await categoryModel.findById(id);
   if (!find) {
-    fs.linkSync(files.path)
+    fs.linkSync(files.path);
     return res.status(404).json({
       message: "Category is not exist",
     });
   }
 
-  let imageData
+  let imageData;
   if (files) {
     await deleteImage(find?.image?.image_id);
     imageData = await ImageUpload(files);
+    fs.linkSync(files.path);
   }
 
   const updatedData = {
-    category_name:data.category_name,
-    image: imageData || find?.image
-  }
+    category_name: data.category_name,
+    image: imageData || find?.image,
+  };
 
-  await categoryModel.findByIdAndUpdate(id, updatedData)
-
-  // if (find?.image?.image_id) {
-  //   await deleteImage(find?.image?.image_id);
-  //   const img = await ImageUpload(files);
-  //   await categoryModel.findByIdAndUpdate(id, { ...data, image: img });
-  // } else {
-  //   const img = await ImageUpload(files);
-  //   await categoryModel.findByIdAndUpdate(id, { ...data, image: img });
-  // }
+  await categoryModel.findByIdAndUpdate(id, updatedData);
 
   return res.status(200).json({
     message: "Category updated successful",
@@ -156,9 +148,9 @@ const GetCategorys = asyncHandler(async (req, res) => {
         category_name: 1,
         Subcategory: 1,
         image: 1,
-      }
-    }
-  ])
+      },
+    },
+  ]);
 
   return res.status(200).json({
     message: "data",
