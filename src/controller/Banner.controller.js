@@ -55,6 +55,7 @@ const DeleteBanner = asyncHandler(async (req, res) => {
     });
   }
   await deleteImage(find?.image?.image_id);
+  await bannerModel.findByIdAndDelete(id);
   return res.status(200).json({
     message: "Banner deleted successful",
   });
