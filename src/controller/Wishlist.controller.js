@@ -43,7 +43,6 @@ const getWishlist = asyncHandler(async (req, res) => {
     })
     .select("-createdAt -updatedAt");
 
-  console.log(data);
   return res.status(200).json({
     message: "data",
     data,

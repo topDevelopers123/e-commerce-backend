@@ -6,11 +6,11 @@ import { ImageUpload, deleteImage } from "../utils/ImageHandler.js";
 
 const CreateProductDetails = asyncHandler(async (req, res) => {
   const data = req.body;
-  const files = req.files
+  const files = req.files;
 
   if (!files || files.length === 0) {
     return res.status(400).json({
-      message: "Images field is empty"
+      message: "Images field is empty",
     });
   }
 
@@ -23,7 +23,7 @@ const CreateProductDetails = asyncHandler(async (req, res) => {
     } catch (error) {
       return res.status(500).json({
         message: "Error uploading images",
-        error: error.message
+        error: error.message,
       });
     }
   }
@@ -65,19 +65,21 @@ const DeleteProductDetails = asyncHandler(async (req, res) => {
     return res.status(403).json({ message: "data is not exist" });
   }
 
-  const files = find?.image
+  const files = find?.image;
 
   for (const file of files) {
     await deleteImage(file?.image_id);
   }
 
-  const findProduct = await ProductModel.findById(find.product_id)
+  const findProduct = await ProductModel.findById(find.product_id);
 
-  const update = findProduct.products_details?.filter((item) => new mongoose.Types.ObjectId(item).toHexString() !== id)
+  const update = findProduct.products_details?.filter(
+    (item) => new mongoose.Types.ObjectId(item).toHexString() !== id
+  );
 
-  await ProductModel.findByIdAndUpdate(find.product_id, { products_details: update })
-
-
+  await ProductModel.findByIdAndUpdate(find.product_id, {
+    products_details: update,
+  });
 
   await ProductDetailModel.findByIdAndDelete(id);
 
@@ -88,7 +90,7 @@ const DeleteProductDetails = asyncHandler(async (req, res) => {
 
 const UpdateProductDetails = asyncHandler(async (req, res) => {
   const data = req.body;
-  const NewFile = req.files
+  const NewFile = req.files;
   const { id } = req.params;
 
   const find = await ProductDetailModel.findById(id);
@@ -97,15 +99,15 @@ const UpdateProductDetails = asyncHandler(async (req, res) => {
       message: "Product details is not exist",
     });
   }
+  console.log(find);
+  let uploadedImages = [];
 
   if (NewFile || NewFile.length > 0) {
-    const files = find?.image
+    const files = find?.image;
 
     for (const file of files) {
       await deleteImage(file?.image_id);
     }
-
-    let uploadedImages = [];
 
     for (const file of NewFile) {
       try {
@@ -114,15 +116,16 @@ const UpdateProductDetails = asyncHandler(async (req, res) => {
       } catch (error) {
         return res.status(500).json({
           message: "Error uploading images",
-          error: error.message
+          error: error.message,
         });
       }
     }
   }
 
-
-
-  await ProductDetailModel.findByIdAndUpdate(id, { ...data, image: uploadedImages });
+  await ProductDetailModel.findByIdAndUpdate(id, {
+    ...data,
+    image: uploadedImages,
+  });
   return res.status(200).json({
     message: "Product Details update Successful",
   });

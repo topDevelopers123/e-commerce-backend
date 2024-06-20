@@ -1,10 +1,10 @@
 import { reviewModel } from "../model/review.model.js";
-import { ImageUpload } from "../utils/ImageHandler.js";
+import { ImageUpload, deleteImage } from "../utils/ImageHandler.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
 const CreateReview = asyncHandler(async (req, res) => {
   const data = req.body;
-  const files = req.files
+  const files = req.files;
 
   const find = await reviewModel.find({
     product_id: data.product_id,
@@ -14,10 +14,9 @@ const CreateReview = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "Review already exist" });
   }
 
-
   if (!files || files.length === 0) {
     return res.status(400).json({
-      message: "Images field is empty"
+      message: "Images field is empty",
     });
   }
 
@@ -30,12 +29,16 @@ const CreateReview = asyncHandler(async (req, res) => {
     } catch (error) {
       return res.status(500).json({
         message: "Error uploading images",
-        error: error.message
+        error: error.message,
       });
     }
   }
 
-  const Create = await reviewModel.create({ ...data, user_id: req.user?._id, image:uploadedImages });
+  const Create = await reviewModel.create({
+    ...data,
+    user_id: req.user?._id,
+    image: uploadedImages,
+  });
   return res.status(201).json({
     message: "Review Send",
     data: Create,
@@ -51,7 +54,7 @@ const DeleteReview = asyncHandler(async (req, res) => {
     return res.status(403).json({ message: "review do not exist" });
   }
 
-  const files = find?.image
+  const files = find?.image;
 
   for (const file of files) {
     await deleteImage(file?.image_id);
