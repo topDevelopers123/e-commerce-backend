@@ -11,7 +11,9 @@ import addressRoute from "./address.routes.js";
 import ProductDetailRoute from "./productDetails.routes.js";
 import WishListRoute from "./wishlist.routes.js";
 import ReviewRoute from "./review.routes.js";
-import OrderRouter from "./Order.routes.js"
+import OrderRouter from "./Order.routes.js";
+import bannerRouter from "./banner.routes.js";
+import shortBannerRouter from "./shortBanner.routes.js";
 
 const router = Router();
 
@@ -25,6 +27,8 @@ router.use("/user-address", addressRoute);
 router.use("/product-details", ProductDetailRoute);
 router.use("/wishlist", WishListRoute);
 router.use("/review", ReviewRoute);
-router.use("/order", OrderRouter)
+router.use("/order", OrderRouter);
+router.use("/banner", bannerRouter);
+router.use("/shortBanner", shortBannerRouter);
 
 export default router;

@@ -5,13 +5,6 @@ const addAddress = asyncHandler(async (req, res) => {
   const data = req.body;
   const id = req.user._id;
 
-  const find = await addressModel.find({ user_id: req.user._id });
-  if (find.length > 0) {
-    return res.status(400).json({
-      message: "address already exist",
-    });
-  }
-
   const result = await addressModel.create({ user_id: req.user._id, ...data });
   res.status(200).json({
     message: "address created successful",

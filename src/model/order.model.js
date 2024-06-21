@@ -11,12 +11,17 @@ const order = new Schema(
     product_id: {
       type: Schema.Types.ObjectId,
       ref: "Product",
-      required:true
+      required: true,
+    },
+    product_detail_id: {
+      type: Schema.Types.ObjectId,
+      ref: "ProductDetail",
+      required: true,
     },
     address_id: {
       type: Schema.Types.ObjectId,
       ref: "Address",
-      required:true
+      required: true,
     },
     payment_status: {
       type: String,
