@@ -73,6 +73,12 @@ const UpdateCategory = asyncHandler(async (req, res) => {
   const files = req.file;
   const { id } = req.params;
 
+  if(!data.category_name){
+    return res.status(400).json({
+      message:"Category name is required"
+    })
+  }
+
   const find = await categoryModel.findById(id);
   if (!find) {
     fs.unlinkSync(files.path);
