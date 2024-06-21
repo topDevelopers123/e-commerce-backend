@@ -6,12 +6,13 @@ const createSubCategory = asyncHandler(async (req, res) => {
   const data = req.body;
   const find = await subCategoryModel.find(data);
   if (find.length > 0) {
-    return res.status(400).json({ message: "parent category already exist" });
+    return res
+      .status(400)
+      .json({ message: "subCategory category already exist" });
   }
   await subCategoryModel.create(data);
   res.status(200).json({ message: "subcategory created successfully" });
 });
-
 
 const getSubCategory = asyncHandler(async (req, res) => {
   const data = await subCategoryModel.find({});

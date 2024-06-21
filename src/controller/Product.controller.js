@@ -188,7 +188,7 @@ const DeleteProduct = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
   const find = await ProductModel.findById(id);
-  console.log(find);
+  
   if (!find) {
     return res.status(403).json({ message: "data is not exist" });
   }
