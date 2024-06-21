@@ -69,7 +69,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
   return res.status(200).json({
     message: "Login Successful",
-    data: findUser,
+    data: findUser  ,
     token,
   });
 });
