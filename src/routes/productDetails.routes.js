@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { Authontication } from "../middleware/Auth.middleware.js";
 import {
   AdminGetProductDetails,
   CreateProductDetails,
@@ -8,23 +7,24 @@ import {
 } from "../controller/productDetail.controller.js";
 import { ProductDetailvalidation } from "../helper/index.helper.js";
 import { upload } from "../middleware/multer.middleware.js";
+import { AdminAuthontication } from "../middleware/Admin.middleware.js";
 
 const router = Router();
 
 router
   .route("/create")
   .post(
-    Authontication,
+    AdminAuthontication,
     upload.array("image"),
     ProductDetailvalidation,
     CreateProductDetails
   );
-router.route("/admin-get").get(Authontication, AdminGetProductDetails);
-router.route("/delete/:id").delete(Authontication, DeleteProductDetails);
+router.route("/admin-get").get(AdminAuthontication, AdminGetProductDetails);
+router.route("/delete/:id").delete(AdminAuthontication, DeleteProductDetails);
 router
   .route("/update/:id")
   .put(
-    Authontication,
+    AdminAuthontication,
     upload.array("image"),
     ProductDetailvalidation,
     UpdateProductDetails

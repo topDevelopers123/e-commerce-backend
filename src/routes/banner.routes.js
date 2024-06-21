@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { Authontication } from "../middleware/Auth.middleware.js";
 import { upload } from "../middleware/multer.middleware.js";
 import {
   DeleteBanner,
@@ -7,14 +6,15 @@ import {
   getAdminBanner,
   getBanner,
 } from "../controller/Banner.controller.js";
+import { AdminAuthontication } from "../middleware/Admin.middleware.js";
 
 const router = Router();
 
 router
   .route("/create")
-  .post(Authontication, upload.single("image"), createBanner);
+  .post(AdminAuthontication, upload.single("image"), createBanner);
 router.route("/get").get(getBanner);
-router.route("/get-admin").get(Authontication, getAdminBanner);
-router.route("/delete/:id").delete(Authontication, DeleteBanner);
+router.route("/get-admin").get(AdminAuthontication, getAdminBanner);
+router.route("/delete/:id").delete(AdminAuthontication, DeleteBanner);
 
 export default router;
