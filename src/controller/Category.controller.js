@@ -3,7 +3,7 @@ import { categoryModel } from "../model/category.model.js";
 import { subCategoryModel } from "../model/sub_category.model.js";
 import { subInnerCategoryModel } from "../model/sub_inner_category.model.js";
 import { ImageUpload, deleteImage } from "../utils/ImageHandler.js";
-import { upload } from "../middleware/multer.middleware.js";
+import fs from "fs";
 
 const CreateCategory = asyncHandler(async (req, res) => {
   const data = req.body;
@@ -73,25 +73,32 @@ const UpdateCategory = asyncHandler(async (req, res) => {
   const files = req.file;
   const { id } = req.params;
 
+  if(!data.category_name){
+    return res.status(400).json({
+      message:"Category name is required"
+    })
+  }
+
   const find = await categoryModel.findById(id);
   if (!find) {
+    fs.unlinkSync(files.path);
     return res.status(404).json({
       message: "Category is not exist",
     });
   }
-  if (!files || files.length === 0) {
-    return res.json({
-      message: "image is required",
-    });
-  }
-  if (find?.image?.image_id) {
+
+  let imageData;
+  if (files) {
     await deleteImage(find?.image?.image_id);
-    const img = await ImageUpload(files);
-    await categoryModel.findByIdAndUpdate(id, { ...data, image: img });
-  } else {
-    const img = await ImageUpload(files);
-    await categoryModel.findByIdAndUpdate(id, { ...data, image: img });
+    imageData = await ImageUpload(files);
   }
+
+  const updatedData = {
+    category_name: data.category_name,
+    image: imageData || find?.image,
+  };
+
+  await categoryModel.findByIdAndUpdate(id, updatedData);
 
   return res.status(200).json({
     message: "Category updated successful",
@@ -142,13 +149,13 @@ const GetCategorys = asyncHandler(async (req, res) => {
       },
     },
     {
-      $project:{
-        category_name:1,
-        Subcategory:1,
-        image:1,
-      }
-    }
-  ])
+      $project: {
+        category_name: 1,
+        Subcategory: 1,
+        image: 1,
+      },
+    },
+  ]);
 
   return res.status(200).json({
     message: "data",

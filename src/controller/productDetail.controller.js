@@ -99,7 +99,7 @@ const UpdateProductDetails = asyncHandler(async (req, res) => {
       message: "Product details is not exist",
     });
   }
-  console.log(find);
+  
   let uploadedImages = [];
 
   if (NewFile || NewFile.length > 0) {

@@ -48,7 +48,7 @@ const loginUser = asyncHandler(async (req, res) => {
   const findUser = await UserModel.findOne({
     $or: [{ email: email }, { phone: email }],
   });
-
+  
   if (!findUser) {
     return res.status(404).json({
       message: "User not exist",
@@ -69,7 +69,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
   return res.status(200).json({
     message: "Login Successful",
-    data: findUser,
+    data: findUser  ,
     token,
   });
 });
@@ -150,13 +150,12 @@ const CrateNewPassword = asyncHandler(async (req, res) => {
   });
 });
 
-
-const Profile = asyncHandler(async(req,res)=>{
-  const file = req.file
-  if(!file){
+const Profile = asyncHandler(async (req, res) => {
+  const file = req.file;
+  if (!file) {
     return res.status(400).json({
-      message:"Image is required"
-    })
+      message: "Image is required",
+    });
   }
 
   const oldFile = req?.user?.profile_image?.image_id;
@@ -164,19 +163,21 @@ const Profile = asyncHandler(async(req,res)=>{
     await deleteImage(oldFile);
   }
 
-  const data = await ImageUpload(file)
-  const update = await UserModel.findByIdAndUpdate(req.user?._id, { profile_image :data})
+  const data = await ImageUpload(file);
+  const update = await UserModel.findByIdAndUpdate(req.user?._id, {
+    profile_image: data,
+  });
   return res.status(200).json({
-    message:"Profile uploaded successful",
-  })
-})
+    message: "Profile uploaded successful",
+  });
+});
 
-const GetOrder = asyncHandler(async(req,res)=>{
+const GetOrder = asyncHandler(async (req, res) => {
   const data = await UserModel.aggregate([
     {
-      $match:{
-        _id:req.user._id
-      }
+      $match: {
+        _id: req.user._id,
+      },
     },
     {
       $lookup: {
@@ -184,16 +185,16 @@ const GetOrder = asyncHandler(async(req,res)=>{
         localField: "_id",
         foreignField: "user_id",
         as: "UserOrder",
-        pipeline:[
+        pipeline: [
           {
-            $lookup:{
+            $lookup: {
               from: "products",
-              localField:"product_id",
-              foreignField:"_id",
-              as:"Product",
-              pipeline:[
+              localField: "product_id",
+              foreignField: "_id",
+              as: "Product",
+              pipeline: [
                 {
-                  $project:{
+                  $project: {
                     title: 1,
                     description: 1,
                     local_charges: 1,
@@ -202,10 +203,10 @@ const GetOrder = asyncHandler(async(req,res)=>{
                     local_deadline: 1,
                     zonal_deadline: 1,
                     national_deadline: 1,
-                  }
-                }
-              ]
-            }
+                  },
+                },
+              ],
+            },
           },
           {
             $lookup: {
@@ -217,16 +218,16 @@ const GetOrder = asyncHandler(async(req,res)=>{
                 {
                   $project: {
                     Size: 1,
-                    color:1,
+                    color: 1,
                     MRP: 1,
                     sellingPrice: 1,
                     selling_quantity: 1,
-                    inStock:1,
-                    image:1
-                  }
-                }
-              ]
-            }
+                    inStock: 1,
+                    image: 1,
+                  },
+                },
+              ],
+            },
           },
           {
             $lookup: {
@@ -234,9 +235,9 @@ const GetOrder = asyncHandler(async(req,res)=>{
               localField: "address_id",
               foreignField: "_id",
               as: "UserAddress",
-              pipeline:[
+              pipeline: [
                 {
-                  $project:{
+                  $project: {
                     fullname: 1,
                     phone: 1,
                     phone2: 1,
@@ -246,36 +247,35 @@ const GetOrder = asyncHandler(async(req,res)=>{
                     area: 1,
                     house_no: 1,
                     pincode: 1,
-                  }
-                }
-              ]
-            }
+                  },
+                },
+              ],
+            },
           },
           {
-            $project:{
-              payment_status:1,
-              status:1,
+            $project: {
+              payment_status: 1,
+              status: 1,
               createdAt: 1,
-              Product:1,
-              ProductDetails:1,
-              UserAddress:1
-          }
-          }
-
-        ]
-      }
+              Product: 1,
+              ProductDetails: 1,
+              UserAddress: 1,
+            },
+          },
+        ],
+      },
     },
     {
-      $project:{
-        UserOrder:1
-      }
-    }
-  ]).sort({ _id: -1 })
+      $project: {
+        UserOrder: 1,
+      },
+    },
+  ]).sort({ _id: -1 });
   return res.status(200).json({
-    message:"order",
-    data
-  })
-})
+    message: "order",
+    data,
+  });
+});
 
 export {
   createUser,
@@ -285,5 +285,5 @@ export {
   newPassword,
   CrateNewPassword,
   Profile,
-  GetOrder
+  GetOrder,
 };

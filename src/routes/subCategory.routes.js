@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { Authontication } from "../middleware/Auth.middleware.js";
 import {
   DeleteSubCategory,
   UpdateSubCategory,
@@ -7,14 +6,15 @@ import {
   getSubCategory,
 } from "../controller/sub_category.controller.js";
 import { Sub_category } from "../helper/index.helper.js";
+import { AdminAuthontication } from "../middleware/Admin.middleware.js";
 
 const router = Router();
 
-router.route("/create").post(Authontication, Sub_category, createSubCategory);
-router.route("/get").get(Authontication, getSubCategory);
-router.route("/delete/:id").delete(Authontication, DeleteSubCategory);
+router.route("/create").post(AdminAuthontication, Sub_category, createSubCategory);
+router.route("/get").get(AdminAuthontication, getSubCategory);
+router.route("/delete/:id").delete(AdminAuthontication, DeleteSubCategory);
 router
   .route("/update/:id")
-  .put(Authontication, Sub_category, UpdateSubCategory);
+  .put(AdminAuthontication, Sub_category, UpdateSubCategory);
 
 export default router;

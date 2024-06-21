@@ -5,7 +5,7 @@ import {
   createBanner,
   getAdminBanner,
   getBanner,
-} from "../controller/Banner.controller.js";
+} from "../controller/shortBanner.controller.js";
 import { AdminAuthontication } from "../middleware/Admin.middleware.js";
 
 const router = Router();
