@@ -75,8 +75,7 @@ const UpdateCategory = asyncHandler(async (req, res) => {
 
   const find = await categoryModel.findById(id);
   if (!find) {
-    
-    fs.linkSync(files.path);
+    fs.unlinkSync(files.path);
     return res.status(404).json({
       message: "Category is not exist",
     });
