@@ -14,7 +14,7 @@ const createSubCategory = asyncHandler(async (req, res) => {
 
 
 const getSubCategory = asyncHandler(async (req, res) => {
-  const data = await subCategoryModel.find({});
+  const data = await subCategoryModel.find({}).populate("parent_category");
   if (!data) {
     res.status(404).json({ message: "subCategory do not exist" });
   }
