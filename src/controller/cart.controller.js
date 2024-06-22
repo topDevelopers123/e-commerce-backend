@@ -24,6 +24,16 @@ const AddToCart = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "item added to cart" });
 });
 
+const getCart = asyncHandler(async (req, res) => {
+  const find = await cartModel.find({ user_id: req.user._id });
+
+  if (!find || find.length === 0) {
+    return res.status(400).json({ message: "Cart is empty" });
+  }
+
+  // res.status(200).json({ message: "Cart found", data: find });
+});
+
 const updateQuantity = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const { quantity } = req.body;
@@ -63,4 +73,10 @@ const RemoveAllProduct = asyncHandler(async (req, res) => {
   res.status(400).json({ message: "item do not exist in cart" });
 });
 
-export { AddToCart, RemoveProductFromCart, updateQuantity, RemoveAllProduct };
+export {
+  AddToCart,
+  RemoveProductFromCart,
+  updateQuantity,
+  RemoveAllProduct,
+  getCart,
+};
