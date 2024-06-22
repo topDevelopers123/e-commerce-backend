@@ -23,6 +23,10 @@ const order = new Schema(
       ref: "Address",
       required: true,
     },
+    payment_type:{
+      type: String,
+      required: true
+    },
     payment_status: {
       type: String,
       default: "pending",
