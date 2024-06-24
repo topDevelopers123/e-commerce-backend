@@ -7,8 +7,6 @@ import { ImageUpload, deleteImage } from "../utils/ImageHandler.js";
 const CreateProductDetails = asyncHandler(async (req, res) => {
   const data = req.body;
   const files = req.files;
-  console.log("Data",data);
-  console.log("file",files);
 
   if (!files || files.length === 0) {
     return res.status(400).json({
@@ -49,9 +47,9 @@ const CreateProductDetails = asyncHandler(async (req, res) => {
 });
 
 const AdminGetProductDetails = asyncHandler(async (req, res) => {
-  const { _id } = req.user;
+  // const { _id } = req.user;
+  const data = await ProductDetailModel.find({});
 
-  const data = await ProductDetailModel.find({ user_id: _id });
   return res.status(200).json({
     message: "data",
     data,
