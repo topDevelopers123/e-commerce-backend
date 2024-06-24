@@ -7,8 +7,8 @@ import { ImageUpload, deleteImage } from "../utils/ImageHandler.js";
 const CreateProductDetails = asyncHandler(async (req, res) => {
   const data = req.body;
   const files = req.files;
-  console.log(data);
-  console.log(files);
+  console.log("Data",data);
+  console.log("file",files);
 
   if (!files || files.length === 0) {
     return res.status(400).json({
