@@ -7,6 +7,8 @@ import { ImageUpload, deleteImage } from "../utils/ImageHandler.js";
 const CreateProductDetails = asyncHandler(async (req, res) => {
   const data = req.body;
   const files = req.files;
+  console.log(data);
+  console.log(files);
 
   if (!files || files.length === 0) {
     return res.status(400).json({
@@ -99,7 +101,7 @@ const UpdateProductDetails = asyncHandler(async (req, res) => {
       message: "Product details is not exist",
     });
   }
-  
+
   let uploadedImages = [];
 
   if (NewFile || NewFile.length > 0) {
