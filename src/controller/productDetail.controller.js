@@ -102,7 +102,7 @@ const UpdateProductDetails = asyncHandler(async (req, res) => {
 
   let uploadedImages = [];
 
-  if (NewFile || NewFile.length > 0) {
+  if (NewFile || NewFile?.length > 0) {
     const files = find?.image;
 
     for (const file of files) {
