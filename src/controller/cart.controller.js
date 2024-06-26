@@ -31,7 +31,7 @@ const getCart = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "Cart is empty" });
   }
 
-  // res.status(200).json({ message: "Cart found", data: find });
+  res.status(200).json({ message: "Cart found", data: find });
 });
 
 const updateQuantity = asyncHandler(async (req, res) => {

@@ -25,7 +25,6 @@ router
   .route("/update/:id")
   .put(
     AdminAuthontication,
-    upload.array("image"),
     ProductDetailvalidation,
     UpdateProductDetails
   );

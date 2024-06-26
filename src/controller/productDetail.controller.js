@@ -47,9 +47,9 @@ const CreateProductDetails = asyncHandler(async (req, res) => {
 });
 
 const AdminGetProductDetails = asyncHandler(async (req, res) => {
-  const { _id } = req.user;
+  // const { _id } = req.user;
+  const data = await ProductDetailModel.find({});
 
-  const data = await ProductDetailModel.find({ user_id: _id });
   return res.status(200).json({
     message: "data",
     data,
@@ -90,7 +90,7 @@ const DeleteProductDetails = asyncHandler(async (req, res) => {
 
 const UpdateProductDetails = asyncHandler(async (req, res) => {
   const data = req.body;
-  const NewFile = req.files;
+  // const NewFile = req.files;
   const { id } = req.params;
 
   const find = await ProductDetailModel.findById(id);
@@ -99,33 +99,30 @@ const UpdateProductDetails = asyncHandler(async (req, res) => {
       message: "Product details is not exist",
     });
   }
-  
-  let uploadedImages = [];
 
-  if (NewFile || NewFile.length > 0) {
-    const files = find?.image;
+  // let uploadedImages = [];
 
-    for (const file of files) {
-      await deleteImage(file?.image_id);
-    }
+  // if (NewFile || NewFile?.length > 0) {
+  //   const files = find?.image;
 
-    for (const file of NewFile) {
-      try {
-        const imageData = await ImageUpload(file);
-        uploadedImages.push(imageData);
-      } catch (error) {
-        return res.status(500).json({
-          message: "Error uploading images",
-          error: error.message,
-        });
-      }
-    }
-  }
+  //   for (const file of files) {
+  //     await deleteImage(file?.image_id);
+  //   }
 
-  await ProductDetailModel.findByIdAndUpdate(id, {
-    ...data,
-    image: uploadedImages,
-  });
+  //   for (const file of NewFile) {
+  //     try {
+  //       const imageData = await ImageUpload(file);
+  //       uploadedImages.push(imageData);
+  //     } catch (error) {
+  //       return res.status(500).json({
+  //         message: "Error uploading images",
+  //         error: error.message,
+  //       });
+  //     }
+  //   }
+  // }
+
+  await ProductDetailModel.findByIdAndUpdate(id, data);
   return res.status(200).json({
     message: "Product Details update Successful",
   });
