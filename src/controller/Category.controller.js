@@ -58,7 +58,6 @@ const DeleteCategory = asyncHandler(async (req, res) => {
     await deleteImage(find?.image?.image_id);
   }
 
-  await subInnerCategoryModel.deleteMany({ parent_category2: id });
   await subInnerCategoryModel.deleteMany({ parent_category1: id });
   await subCategoryModel.deleteMany({ parent_category: id });
   await categoryModel.findByIdAndDelete(id);
@@ -73,10 +72,10 @@ const UpdateCategory = asyncHandler(async (req, res) => {
   const files = req.file;
   const { id } = req.params;
 
-  if(!data.category_name){
+  if (!data.category_name) {
     return res.status(400).json({
-      message:"Category name is required"
-    })
+      message: "Category name is required",
+    });
   }
 
   const find = await categoryModel.findById(id);

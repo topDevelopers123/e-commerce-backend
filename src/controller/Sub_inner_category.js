@@ -17,7 +17,15 @@ const Createinnercategory = asyncHandler(async (req, res) => {
 });
 
 const GetInnerCategory = asyncHandler(async (req, res) => {
-  const data = await subInnerCategoryModel.find({}).populate("parent_category1").populate("parent_category2");
+  const { query } = req;
+  const limit = Number(query.limit) || 10;
+  const page = Number(query.page) || 1;
+  const newLimit = limit * page;
+  const data = await subInnerCategoryModel
+    .find({})
+    .populate("parent_category1")
+    .populate("parent_category2")
+    .limit(newLimit);
   return res.status(200).json({
     message: "data",
     data,

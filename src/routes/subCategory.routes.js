@@ -10,8 +10,10 @@ import { AdminAuthontication } from "../middleware/Admin.middleware.js";
 
 const router = Router();
 
-router.route("/create").post(AdminAuthontication, Sub_category, createSubCategory);
-router.route("/get").get(AdminAuthontication, getSubCategory);
+router
+  .route("/create")
+  .post(AdminAuthontication, Sub_category, createSubCategory);
+router.route("/get?").get(AdminAuthontication, getSubCategory);
 router.route("/delete/:id").delete(AdminAuthontication, DeleteSubCategory);
 router
   .route("/update/:id")

@@ -14,7 +14,7 @@ const router = Router();
 router
   .route("/create")
   .post(AdminAuthontication, Sub_Inner_category, Createinnercategory);
-router.route("/get-admin").get(AdminAuthontication, GetInnerCategory);
+router.route("/get-admin?").get(AdminAuthontication, GetInnerCategory);
 router.route("/delete/:id").delete(AdminAuthontication, DeleteInnerCategory);
 router
   .route("/update/:id")
