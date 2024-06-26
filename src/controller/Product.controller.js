@@ -14,7 +14,13 @@ const CreateProduct = asyncHandler(async (req, res) => {
   });
 });
 
-const GetProduct = asyncHandler(async (_, res) => {
+const GetProduct = asyncHandler(async (req, res) => {
+  const {query} = req
+
+  const limit = Number(query.limit) || 8
+  const page = Number(query.page) || 1
+  const newLimit = limit*page
+
   const data = await ProductModel.aggregate([
     {
       $lookup: {
@@ -124,7 +130,7 @@ const GetProduct = asyncHandler(async (_, res) => {
         pipeline: [{ $project: { sub_inner_category_name: 1 } }],
       },
     },
-  ]);
+  ]).limit(newLimit);
 
   return res.status(200).json({
     message: "Data ",
