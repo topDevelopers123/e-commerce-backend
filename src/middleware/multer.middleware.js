@@ -22,6 +22,19 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
+// multerErrorMiddleware.js
+
+export const multerErrorMiddleware = (err, req, res, next) => {
+  if (err instanceof multer.MulterError) {
+    // Handle multer-specific errors
+    return res.status(400).json({ error: err.message });
+  } else if (err) {
+    // Handle other errors
+    return res.status(400).json({ error: err.message });
+  }
+  next();
+};
+
 export const upload = multer({
   storage: storage,
   fileFilter: fileFilter,
