@@ -8,12 +8,6 @@ const CreateProductDetails = asyncHandler(async (req, res) => {
   const data = req.body;
   const files = req.files;
 
-  if (!files || files.length === 0) {
-    return res.status(400).json({
-      message: "Images field is empty",
-    });
-  }
-
   let uploadedImages = [];
 
   for (const file of files) {
