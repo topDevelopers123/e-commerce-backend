@@ -12,11 +12,11 @@ export const UserSchema = vine.object({
 });
 
 export const ProductSchema = vine.object({
-  title: vine.string().minLength(5).maxLength(25),
-  description: vine.string(50),
-  category: vine.string().maxLength(30),
-  sub_category: vine.string().maxLength(30),
-  sub_inner_category: vine.string().maxLength(30),
+  title: vine.string().minLength(5).maxLength(100),
+  description: vine.string().minLength(20),
+  category: vine.string().maxLength(50),
+  sub_category: vine.string().maxLength(50),
+  sub_inner_category: vine.string().maxLength(50),
   local_charges: vine.number(),
   zonal_charges: vine.number(),
   national_charges: vine.number(),
