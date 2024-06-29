@@ -13,16 +13,11 @@ const addAddress = asyncHandler(async (req, res) => {
 });
 
 const getAddress = asyncHandler(async (req, res) => {
-  const find = await addressModel.find({ user_id: req.user._id });
+  const data = await addressModel.find({ user_id: req.user._id });
 
-  if (!(find.length > 0)) {
-    return res.status(400).json({
-      message: "address not found",
-    });
-  }
   res.status(200).json({
     message: "address found",
-    find,
+    data,
   });
 });
 
