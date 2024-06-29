@@ -15,7 +15,7 @@ export const validate = (schema) => {
         });
       } else {
         return res.status(500).json({
-          message: "internal server error",
+          message: "internal server error custom msg",
           error,
         });
       }

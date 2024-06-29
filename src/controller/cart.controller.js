@@ -25,7 +25,10 @@ const AddToCart = asyncHandler(async (req, res) => {
 });
 
 const getCart = asyncHandler(async (req, res) => {
-  const find = await cartModel.find({ user_id: req.user._id });
+  const find = await cartModel
+    .find({ user_id: req.user._id })
+    .populate("product_id")
+    .populate("productDetails");
 
   if (!find || find.length === 0) {
     return res.status(400).json({ message: "Cart is empty" });

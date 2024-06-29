@@ -15,8 +15,10 @@ app.use(cors())
 // local imports 
 import routes from "./routes/index.routes.js"
 import { deleteImage } from "./utils/ImageHandler.js";
+import { errorMiddleware } from "./middleware/errorMiddleware.js";
 
 app.use("/api/v1",routes)
+app.use(errorMiddleware);
 
 
 

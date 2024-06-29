@@ -39,7 +39,7 @@ const getWishlist = asyncHandler(async (req, res) => {
     })
     .populate({
       path: "product_detail_id",
-      select: "-selling_quantity -inStock -image -createdAt -updatedAt",
+      select: "-selling_quantity -createdAt -updatedAt",
     })
     .select("-createdAt -updatedAt");
 

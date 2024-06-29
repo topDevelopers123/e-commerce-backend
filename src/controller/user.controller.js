@@ -48,7 +48,7 @@ const loginUser = asyncHandler(async (req, res) => {
   const findUser = await UserModel.findOne({
     $or: [{ email: email }, { phone: email }],
   });
-  
+
   if (!findUser) {
     return res.status(404).json({
       message: "User not exist",
@@ -69,7 +69,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
   return res.status(200).json({
     message: "Login Successful",
-    data: findUser  ,
+    data: findUser,
     token,
   });
 });
@@ -147,6 +147,14 @@ const CrateNewPassword = asyncHandler(async (req, res) => {
 
   return res.status(200).json({
     message: "New Password Created",
+  });
+});
+
+const getAllUsers = asyncHandler(async (req, res) => {
+  const data = await UserModel.find({});
+  return res.status(200).json({
+    message: "All user Data",
+    data,
   });
 });
 
@@ -286,4 +294,5 @@ export {
   CrateNewPassword,
   Profile,
   GetOrder,
+  getAllUsers,
 };

@@ -10,15 +10,16 @@ const cart = new Schema(
     productDetails: {
       type: Schema.Types.ObjectId,
       ref: "ProductDetail",
+      required: true,
     },
     quantity: {
       type: Number,
-      require: [true, "Quantity is required"],
+      required: true,
     },
     user_id: {
       type: Schema.Types.ObjectId,
       ref: "User",
-      required:true
+      required: true,
     },
   },
   { timestamps: true }
