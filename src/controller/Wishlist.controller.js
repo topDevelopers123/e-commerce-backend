@@ -11,6 +11,7 @@ const CreateWishlist = asyncHandler(async (req, res) => {
   }
   const find = await wishlistModel.find({
     product_id: data.product_id,
+    product_detail_id: data.product_detail_id,
     user_id: req.user?._id,
   });
   if (find.length > 0) {
