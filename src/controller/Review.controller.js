@@ -13,24 +13,18 @@ const CreateReview = asyncHandler(async (req, res) => {
   if (find.length > 0) {
     return res.status(400).json({ message: "Review already exist" });
   }
-
-  if (!files || files.length === 0) {
-    return res.status(400).json({
-      message: "Images field is empty",
-    });
-  }
-
   let uploadedImages = [];
-
-  for (const file of files) {
-    try {
-      const imageData = await ImageUpload(file);
-      uploadedImages.push(imageData);
-    } catch (error) {
-      return res.status(500).json({
-        message: "Error uploading images",
-        error: error.message,
-      });
+  if (files || files.length > 0) {
+    for (const file of files) {
+      try {
+        const imageData = await ImageUpload(file);
+        uploadedImages.push(imageData);
+      } catch (error) {
+        return res.status(500).json({
+          message: "Error uploading images",
+          error: error.message,
+        });
+      }
     }
   }
 
@@ -45,9 +39,19 @@ const CreateReview = asyncHandler(async (req, res) => {
   });
 });
 
+const GetReview = asyncHandler(async (req, res) => {
+  const { _id } = req.user;
+
+  const data = await reviewModel.find({ user_id: _id }).populate("product_id");
+
+  return res.status(200).json({
+    message: "Review Get Successful",
+    data,
+  });
+});
+
 const DeleteReview = asyncHandler(async (req, res) => {
   const { id } = req.params;
-
   const find = await reviewModel.findById(id);
 
   if (!find) {
@@ -67,4 +71,4 @@ const DeleteReview = asyncHandler(async (req, res) => {
   });
 });
 
-export { CreateReview, DeleteReview };
+export { CreateReview, DeleteReview, GetReview };
