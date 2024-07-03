@@ -42,7 +42,7 @@ const CreateReview = asyncHandler(async (req, res) => {
 const GetReview = asyncHandler(async (req, res) => {
   const { _id } = req.user;
 
-  const data = await reviewModel.find({ user_id: _id }).populate("product_id");
+  const data = await reviewModel.find({ user_id: _id });
 
   return res.status(200).json({
     message: "Review Get Successful",
