@@ -32,7 +32,7 @@ const CreateWishlist = asyncHandler(async (req, res) => {
 
 const getWishlist = asyncHandler(async (req, res) => {
   const data = await wishlistModel
-    .find({_id:req.user._id})
+    .find({ user_id: req.user._id })
     .populate({
       path: "product_id",
       select:
