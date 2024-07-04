@@ -40,6 +40,7 @@ export const addressCheck = vine.object({
   fullname: vine.string().minLength(3).maxLength(30),
   phone: vine.string().minLength(10).maxLength(12),
   phone2: vine.string().minLength(10).maxLength(12),
+  addressType: vine.string().minLength(3).maxLength(5),
   country: vine.string().minLength(3),
   state: vine.string().minLength(3),
   city: vine.string().minLength(3),
