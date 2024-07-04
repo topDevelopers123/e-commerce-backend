@@ -7,6 +7,11 @@ const address = new Schema(
       trim: true,
       required: true,
     },
+    addressType: {
+      type: String,
+      trim: true,
+      required: true,
+    },
     phone: {
       type: String,
       trim: true,
