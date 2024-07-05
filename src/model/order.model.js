@@ -23,9 +23,13 @@ const order = new Schema(
       ref: "Address",
       required: true,
     },
-    payment_type:{
+    payment_type: {
       type: String,
-      required: true
+      required: true,
+    },
+    total_price: {
+      type: Number,
+      required: true,
     },
     payment_status: {
       type: String,
