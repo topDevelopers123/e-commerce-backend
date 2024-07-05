@@ -29,7 +29,6 @@ const order = new Schema(
     },
     total_price: {
       type: Number,
-      required: true,
     },
     payment_status: {
       type: String,
