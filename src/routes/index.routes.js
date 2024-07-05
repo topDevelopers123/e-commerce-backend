@@ -14,6 +14,7 @@ import ReviewRoute from "./review.routes.js";
 import OrderRouter from "./Order.routes.js";
 import bannerRouter from "./banner.routes.js";
 import shortBannerRouter from "./shortBanner.routes.js";
+import ReturnRouter from "./Return.routes.js"
 
 const router = Router();
 
@@ -30,5 +31,6 @@ router.use("/review", ReviewRoute);
 router.use("/order", OrderRouter);
 router.use("/banner", bannerRouter);
 router.use("/shortBanner", shortBannerRouter);
+router.use("/return", ReturnRouter)
 
 export default router;

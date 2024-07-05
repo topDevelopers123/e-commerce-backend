@@ -1,4 +1,4 @@
-import Mongoose, { Schema } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const returnSchema = new Schema(
   {
@@ -17,9 +17,13 @@ const returnSchema = new Schema(
       ref: "ProductDetail",
       required: true,
     },
+    address_id: { // Corrected to lowercase 'a'
+      type: Schema.Types.ObjectId,
+      ref: "Address",
+      required: true,
+    },
     approved: {
       type: Boolean,
-      required: true,
     },
     reason: {
       type: String,
@@ -28,8 +32,12 @@ const returnSchema = new Schema(
     upi_account_no: {
       type: String,
     },
+    qty: {
+      type: Number,
+      required: true,
+    },
   },
   { timestamps: true }
 );
 
-export const ReturnModel = Mongoose.model("Return", returnSchema);
+export const ReturnModel = mongoose.model("Return", returnSchema);
