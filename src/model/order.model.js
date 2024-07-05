@@ -23,6 +23,9 @@ const order = new Schema(
       ref: "Address",
       required: true,
     },
+    charges: {
+      type: Number,
+    },
     payment_type: {
       type: String,
       required: true,
