@@ -30,9 +30,9 @@ const order = new Schema(
       type: String,
       required: true,
     },
-    total_price: {
-      type: Number,
-    },
+    // total_price: {
+    //   type: Number,
+    // },
     payment_status: {
       type: String,
       default: "pending",
