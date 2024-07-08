@@ -22,6 +22,10 @@ const order = new Schema(
       type: String,
       required: true,
     },
+    quantity: {
+      type: Number,
+      required: true,
+    },
     address_id: {
       type: Schema.Types.ObjectId,
       ref: "Address",
