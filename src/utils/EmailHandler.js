@@ -38,7 +38,7 @@ export function RecivedMail(item) {
     from: process.env.Auth_mail,
     to: "parasjisco@gmail.com",
     subject: item?.sub,
-    text: `greateing of the day ! \n name : ${item.name} \n E-mail : ${item.email} \n Contect No. : ${item.phone} \n \n ${item.text}`,
+    text: `greateing of the day !  \n  \n ${item.text}\n \n  name : ${item.name} \n E-mail : ${item.email} \n Contect No. : ${item.phone}  `,
   };
   mailtransporter.sendMail(malingdetail, function (err, data) {
     if (err) {
