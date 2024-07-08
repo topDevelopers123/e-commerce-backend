@@ -1,6 +1,7 @@
 import { cartModel } from "../model/cart.model.js";
 import { orderModel } from "../model/order.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import { RemoveAllProduct } from "./cart.controller.js";
 
 const CreateOrder = asyncHandler(async (req, res) => {
   const data = req.body;
@@ -10,6 +11,7 @@ const CreateOrder = asyncHandler(async (req, res) => {
     for (const cart of data.cartId) {
       const data = await cartModel.findById(cart.id);
       CartData.push({ ...data, charges: cart.charges });
+      await cartModel.findByIdAndDelete(cart.id);
     }
   }
   const CartOrder = CartData.map((item) => ({
@@ -129,9 +131,6 @@ const GetAdmin = asyncHandler(async (req, res) => {
                 category: 1,
                 sub_category: 1,
                 sub_inner_category: 1,
-                local_charges: 1,
-                zonal_charges: 1,
-                national_charges: 1,
                 local_deadline: 1,
                 zonal_deadline: 1,
                 national_deadline: 1,
@@ -166,7 +165,7 @@ const GetAdmin = asyncHandler(async (req, res) => {
           from: "addresses",
           localField: "address_id",
           foreignField: "_id",
-          as: "UserAddres",
+          as: "UserAddress",
           pipeline: [
             {
               $project: {
@@ -186,11 +185,14 @@ const GetAdmin = asyncHandler(async (req, res) => {
       },
       {
         $project: {
-          payment_status: 1,
+          charges: 1,
           status: 1,
           Product: 1,
+          payment_type: 1,
+          payment_status: 1,
           ProductDetails: 1,
-          UserAddres: 1,
+          UserAddress: 1,
+          createdAt: 1,
         },
       },
     ])
