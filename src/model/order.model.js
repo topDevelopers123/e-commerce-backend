@@ -18,6 +18,10 @@ const order = new Schema(
       ref: "ProductDetail",
       required: true,
     },
+    image: {
+      type: String,
+      required: true,
+    },
     address_id: {
       type: Schema.Types.ObjectId,
       ref: "Address",
