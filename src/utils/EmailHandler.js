@@ -13,8 +13,32 @@ export function SendMail(item) {
   let malingdetail = {
     from: process.env.Auth_mail,
     to: item?.email,
-    subject: item?.Sub,
+    subject: item?.sub,
     text: item?.text,
+  };
+  mailtransporter.sendMail(malingdetail, function (err, data) {
+    if (err) {
+      console.log(err.message);
+    }
+  });
+}
+
+
+export function RecivedMail(item) {
+  let mailtransporter = mailer.createTransport({
+    service: "gmail",
+    secure: true,
+    auth: {
+      user: process.env.Auth_mail,
+      pass: process.env.Auth_pass,
+    },
+  });
+
+  let malingdetail = {
+    from: process.env.Auth_mail,
+    to: "parasjisco@gmail.com",
+    subject: item?.sub,
+    text: `greateing of the day ! \n name : ${item.name} \n E-mail : ${item.email} \n Contect No. : ${item.phone} \n \n ${item.text}`,
   };
   mailtransporter.sendMail(malingdetail, function (err, data) {
     if (err) {
