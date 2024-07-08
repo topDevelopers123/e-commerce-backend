@@ -3,7 +3,7 @@ import { cartModel } from "../model/cart.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
 const AddToCart = asyncHandler(async (req, res) => {
-  const { product_id, productDetails, quantity } = req.body;
+  const { product_id, productDetails, quantity,image } = req.body;
 
   const find = await cartModel.find({
     product_id,
@@ -18,6 +18,7 @@ const AddToCart = asyncHandler(async (req, res) => {
     product_id,
     productDetails,
     quantity,
+    image,
     user_id: req.user._id,
   });
 
