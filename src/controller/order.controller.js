@@ -10,7 +10,7 @@ const CreateOrder = asyncHandler(async (req, res) => {
   if (data.cartId) {
     for (const cart of data.cartId) {
       const data = await cartModel.findById(cart.id);
-      CartData.push({ ...data, charges: cart.charges });
+      CartData.push({ ...data, charges: cart.charges,image:cart.image });
       await cartModel.findByIdAndDelete(cart.id);
     }
   }
@@ -19,6 +19,7 @@ const CreateOrder = asyncHandler(async (req, res) => {
     product_id: item._doc.product_id,
     product_detail_id: item._doc.productDetails,
     address_id: data.address_id,
+    image:item.image,
     payment_type: data.payment_type,
     payment_status: data.payment_status,
     charges: item.charges,
