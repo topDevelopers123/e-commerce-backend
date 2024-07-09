@@ -30,6 +30,21 @@ const products = new Schema(
       ref: "subInnerCategory",
       required: true,
     },
+    SGST: {
+      type: Number,
+      required: true,
+      default: 9,
+    },
+    CGST: {
+      type: Number,
+      required: true,
+      default: 9,
+    },
+    IGST: {
+      type: Number,
+      required: true,
+      default: 18,
+    },
     local_charges: {
       type: Number,
       trim: true,

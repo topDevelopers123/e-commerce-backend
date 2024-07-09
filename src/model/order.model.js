@@ -18,6 +18,9 @@ const order = new Schema(
       ref: "ProductDetail",
       required: true,
     },
+    razorpay_payment_id: {
+      type: String,
+    },
     image: {
       type: String,
       required: true,
