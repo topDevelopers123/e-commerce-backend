@@ -31,3 +31,14 @@ export const MakePayement = asyncHandler(async(req,res)=>{
 
     }
 })
+
+export const RefundPayement = asyncHandler(async(req,res)=>{
+    const { paymentId, refundAmount }  = req.body
+    instance.payments.refund(paymentId, { amount: refundAmount })
+        .then(response => {
+            console.log('Refund successful:', response);
+        })
+        .catch(error => {
+            console.error('Error in refund:', error);
+        });
+})

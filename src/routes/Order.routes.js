@@ -6,8 +6,7 @@ import {
   GetAdmin,
   UpdateOrder,
 } from "../controller/order.controller.js";
-import { Ordervalidation } from "../helper/index.helper.js";
-import { MakePayement } from "../controller/payement.controller.js";
+import { MakePayement, RefundPayement } from "../controller/payement.controller.js";
 
 const router = Router();
 
@@ -16,5 +15,6 @@ router.route("/update/:id").put(Authontication, UpdateOrder);
 router.route("/get-orders").get(Authontication, GetAdmin);
 router.route("/buynow").post(Authontication, BuyNow);
 router.route("/payement").post(MakePayement)
+router.route("/refund").post(RefundPayement)
 
 export default router;
