@@ -24,6 +24,7 @@ const CreateOrder = asyncHandler(async (req, res) => {
     payment_type: data.payment_type,
     payment_status: data.payment_status,
     charges: item.charges,
+    razorpay_payment_id: data.razorpay_payment_id,
     status: data.status,
   }));
 
