@@ -7,13 +7,16 @@ var instance = new Razorpay({
   key_secret: process.env.PAYEMENT_KEY_SECRATE,
 });
 
-export const MakePayement = asyncHandler(async (req, res) => {
+export const MakePayementOnline = asyncHandler(async (req, res) => {
   try {
     const data = req.body;
     const options = {
       amount: data.amount * 100,
       currency: "INR",
       receipt: "parasjisco@gmail.com",
+      notes: {
+        paymentType: "Online",
+      },
     };
     instance.orders.create(options, (err, order) => {
       if (err) {
@@ -44,7 +47,6 @@ export const RefundPayement = asyncHandler(async (req, res) => {
 export const getReceipt = asyncHandler(async (req, res) => {
   const paymentId = req.body.paymentId;
 
-  
   try {
     const response = await axios.get(
       `https://api.razorpay.com/v1/payments/${paymentId}`,
@@ -63,5 +65,58 @@ export const getReceipt = asyncHandler(async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+});
+
+export const createInvoice = asyncHandler(async (req, res) => {
+  const { orderId, customerDetails } = req.body;
+  console.log(orderId, customerDetails);
+  const options = {
+    type: "invoice",
+    date: Math.floor(Date.now() / 1000),
+    customer: customerDetails,
+    line_items: [
+      {
+        name: "Sample Item",
+        description: "Description for sample item",
+        amount: 50000,
+        currency: "INR",
+        quantity: 1,
+      },
+    ],
+    terms: "Terms and conditions of the invoice.",
+    notes: {
+      key1: "value1",
+      key2: "value2",
+    },
+  };
+
+  try {
+    const invoice = await instance.invoices.create(options);
+    console.log(invoice);
+    res.status(200).json({ invoice: invoice, message: "Invoice created" });
+  } catch (error) {
+    console.error(error);
+    throw new Error("Invoice creation failed");
+  }
+});
+
+export const MakePayementCOD = asyncHandler(async (req, res) => {
+  const data = req.body;
+  const options = {
+    amount: data.amount * 100,
+    currency: "INR",
+    receipt: "parasjisco@gmail.com",
+    payment_capture: 0, // For COD, set payment_capture to 0
+    notes: {
+      paymentType: "Online",
+    },
+  };
+  try {
+    const order = await instance.orders.create(options);
+    console.log(order);
+    return order;
+  } catch (error) {
+    console.error(error);
   }
 });
