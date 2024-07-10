@@ -1,5 +1,6 @@
 import {ConnectToDB} from "./config/DB.config.js"
 import { app } from "./app.js"
+import { CreateInvoice } from "./helper/invoice.helper.js"
 
 
 
@@ -9,3 +10,5 @@ ConnectToDB().then(()=>{
     })
 
 })
+
+// CreateInvoice()
