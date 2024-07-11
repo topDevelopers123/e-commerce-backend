@@ -10,7 +10,6 @@ var instance = new Razorpay({
 export const MakePayement = asyncHandler(async (req, res) => {
   try {
     const data = req.body;
-    console.log(data);
     let options = {};
     if (data.PaymenType === "COD") {
       options = {
