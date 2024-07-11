@@ -7,17 +7,33 @@ var instance = new Razorpay({
   key_secret: process.env.PAYEMENT_KEY_SECRATE,
 });
 
-export const MakePayementOnline = asyncHandler(async (req, res) => {
+export const MakePayement = asyncHandler(async (req, res) => {
   try {
     const data = req.body;
-    const options = {
-      amount: data.amount * 100,
-      currency: "INR",
-      receipt: "parasjisco@gmail.com",
-      notes: {
-        paymentType: "Online",
-      },
-    };
+    console.log(data);
+    let options = {};
+    if (data.PaymenType === "COD") {
+      options = {
+        payment_capture: 0,
+        amount: data.amount * 100,
+        currency: "INR",
+        receipt: "parasjisco@gmail.com",
+        notes: {
+          paymentType: "Cash on Delivery",
+        },
+      };
+    }
+    if (data.PaymenType === "online") {
+      options = {
+        payment_capture: 1,
+        amount: data.amount * 100,
+        currency: "INR",
+        receipt: "parasjisco@gmail.com",
+        notes: {
+          paymentType: "Online",
+        },
+      };
+    }
     instance.orders.create(options, (err, order) => {
       if (err) {
         console.log(err);
@@ -98,25 +114,5 @@ export const createInvoice = asyncHandler(async (req, res) => {
   } catch (error) {
     console.error(error);
     throw new Error("Invoice creation failed");
-  }
-});
-
-export const MakePayementCOD = asyncHandler(async (req, res) => {
-  const data = req.body;
-  const options = {
-    amount: data.amount * 100,
-    currency: "INR",
-    receipt: "parasjisco@gmail.com",
-    payment_capture: 0, // For COD, set payment_capture to 0
-    notes: {
-      paymentType: "Online",
-    },
-  };
-  try {
-    const order = await instance.orders.create(options);
-    console.log(order);
-    return order;
-  } catch (error) {
-    console.error(error);
   }
 });

@@ -9,8 +9,7 @@ import {
 import {
   createInvoice,
   getReceipt,
-  MakePayementCOD,
-  MakePayementOnline,
+  MakePayement,
   RefundPayement,
 } from "../controller/payement.controller.js";
 
@@ -20,10 +19,9 @@ router.route("/create").post(Authontication, CreateOrder);
 router.route("/update/:id").put(Authontication, UpdateOrder);
 router.route("/get-orders").get(Authontication, GetAdmin);
 router.route("/buynow").post(Authontication, BuyNow);
-router.route("/payement").post(MakePayementOnline);
+router.route("/payement").post(MakePayement);
 router.route("/refund").post(RefundPayement);
 router.route("/getReceipt").post(getReceipt);
 router.route("/Invoice").post(createInvoice);
-router.route("/cashorder").post(MakePayementCOD);
 
 export default router;
