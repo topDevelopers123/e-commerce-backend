@@ -17,6 +17,10 @@ const wishlist = new Schema(
       ref: "User",
       required: true,
     },
+    image:{
+      type:String,
+      require:true
+    }
   },
   { timestamps: true }
 );
