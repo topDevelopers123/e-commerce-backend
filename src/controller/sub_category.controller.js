@@ -19,7 +19,6 @@ const getSubCategory = asyncHandler(async (req, res) => {
   const limit = Number(query.limit) || 5;
   const page = Number(query.page) || 1;
   const newLimit = limit * (page - 1);
-  console.log(page);
   const data = await subCategoryModel
     .find({})
     .populate("parent_category")
