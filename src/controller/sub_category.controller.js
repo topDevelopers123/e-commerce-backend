@@ -22,7 +22,7 @@ const getSubCategory = asyncHandler(async (req, res) => {
   const data = await subCategoryModel
     .find({})
     .populate("parent_category")
-    .skip((page - 1) * limit)
+    .skip(page * limit)
     .limit(limit);
   if (!data) {
     res.status(404).json({ message: "subCategory do not exist" });
