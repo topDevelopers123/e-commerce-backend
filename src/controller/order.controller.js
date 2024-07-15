@@ -1,11 +1,10 @@
 import { cartModel } from "../model/cart.model.js";
 import { orderModel } from "../model/order.model.js";
+import { ProductDetailModel } from "../model/ProductDetail.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { RemoveAllProduct } from "./cart.controller.js";
 
 const CreateOrder = asyncHandler(async (req, res) => {
   const data = req.body;
-
   let CartData = [];
   if (data.cartId) {
     for (const cart of data.cartId) {
@@ -19,6 +18,7 @@ const CreateOrder = asyncHandler(async (req, res) => {
       await cartModel.findByIdAndDelete(cart.id);
     }
   }
+
   const CartOrder = CartData.map((item) => ({
     user_id: req.user?._id,
     product_id: item._doc.product_id,
@@ -34,6 +34,15 @@ const CreateOrder = asyncHandler(async (req, res) => {
     status: data.status,
   }));
 
+  for (let item of CartData) {
+    const totalStock = await ProductDetailModel.findById(
+      item?._doc?.productDetails
+    );
+    await ProductDetailModel.findByIdAndUpdate(item?._doc?.productDetails, {
+      inStock: totalStock.inStock - item.quantity,
+    });
+  }
+
   const Create = await orderModel.create(CartOrder);
 
   return res.status(201).json({
@@ -46,6 +55,12 @@ const BuyNow = asyncHandler(async (req, res) => {
   const data = req.body;
 
   const create = await orderModel.create({ ...data, user_id: req.user?._id });
+
+  const totalStock = await ProductDetailModel.findById(data.product_detail_id);
+
+  await ProductDetailModel.findByIdAndUpdate(data.product_detail_id, {
+    inStock: totalStock.inStock - data.quantity,
+  });
   return res.status(201).json({
     message: "Ordered Successful",
     data: create,
