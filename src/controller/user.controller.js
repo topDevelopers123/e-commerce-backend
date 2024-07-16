@@ -268,8 +268,10 @@ const GetOrder = asyncHandler(async (req, res) => {
               Product: 1,
               ProductDetails: 1,
               UserAddress: 1,
-              image:1,
-              quantity:1
+              image: 1,
+              quantity: 1,
+              razorpay_order_id: 1,
+              payment_type: 1,
             },
           },
         ],
