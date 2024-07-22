@@ -143,8 +143,8 @@ const GetProduct = asyncHandler(async (req, res) => {
 const AdminGetProduct = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   const { query } = req;
-  const page = query.page || 1;
-  const limit = query.limit || 1;
+  const page = Number(query.page )|| 1;
+  const limit = Number(query.limit) || 1;
   const newLimit = limit * (page - 1);
 
   const data = await ProductModel.aggregate([
