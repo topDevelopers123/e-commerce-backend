@@ -22,7 +22,7 @@ router
     multerErrorMiddleware,
     CreateCategory
   );
-router.route("/get-admin").get(AdminAuthontication, GetCategory);
+router.route("/get-admin?").get(AdminAuthontication, GetCategory);
 router.route("/delete/:id").delete(AdminAuthontication, DeleteCategory);
 router
   .route("/update/:id")

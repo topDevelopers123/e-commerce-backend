@@ -63,3 +63,16 @@ export const OrderDetail = vine.object({
   payment_status: vine.string().minLength(3),
   status: vine.string().minLength(3),
 });
+
+
+export const ReturnDetail = vine.object({
+  user_id: vine.string().minLength(5),
+  product_id:vine.string().minLength(5),
+  product_detail_id:vine.string().minLength(5),
+  address_id:vine.string().minLength(5),
+  approved:vine.boolean(),
+  reason:vine.string(),
+  upi_account_no:vine.string(),
+  qty:vine.number(),
+  
+});

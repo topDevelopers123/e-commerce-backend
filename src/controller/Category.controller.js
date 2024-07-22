@@ -37,7 +37,12 @@ const CreateCategory = asyncHandler(async (req, res) => {
 });
 
 const GetCategory = asyncHandler(async (req, res) => {
-  const data = await categoryModel.find({});
+  const { query } = req;
+  const page = query.page || 1;
+  const limit = query.limit || 1;
+  const newLimit = limit * (page - 1);
+
+  const data = await categoryModel.find({}).skip(newLimit).limit(limit);
   return res.status(200).json({
     message: "data",
     data,

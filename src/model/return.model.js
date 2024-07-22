@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import { images } from "./Images.model.js";
 
 const returnSchema = new Schema(
   {
@@ -17,10 +18,14 @@ const returnSchema = new Schema(
       ref: "ProductDetail",
       required: true,
     },
-    address_id: { // Corrected to lowercase 'a'
+    address_id: {
+      // Corrected to lowercase 'a'
       type: Schema.Types.ObjectId,
       ref: "Address",
       required: true,
+    },
+    image: {
+      type: [images],
     },
     approved: {
       type: Boolean,

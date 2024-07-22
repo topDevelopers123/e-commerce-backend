@@ -15,21 +15,28 @@ const Update = asyncHandler(async (req, res) => {
   const find = await ReturnModel.findById(id);
   if (!find || find.length < 1) {
     return res.status(400).json({
-      message: "Order not exist",
+      message: "Return item not exist",
     });
   }
 
-  await ReturnModel.findByIdAndUpdate(id, { approved });
+  await ReturnModel.findByIdAndUpdate(id, { approved }, { new: true });
+  
   return res.status(200).json({
-    message: "Order approved successful",
+    message: "Return approved successful",
   });
 });
 
 const Getdata = asyncHandler(async (req, res) => {
+  const { query } = req;
+  const page = query.page || 1;
+  const limit = query.limit || 5;
+  const newLimit = limit * (page - 1);
   const data = await ReturnModel.find({})
     .populate("product_id")
     .populate("product_detail_id")
-    .populate("address_id");
+    .populate("address_id")
+    .skip(newLimit)
+    .limit(limit);
   return res.status(200).json({
     message: "data",
     data,

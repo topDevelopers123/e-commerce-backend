@@ -87,6 +87,10 @@ const UpdateOrder = asyncHandler(async (req, res) => {
 });
 
 const GetAdmin = asyncHandler(async (req, res) => {
+  const { query } = req;
+  const limit = query.limit || 5;
+  const index = query.index || 1;
+  const newLimit = limit * index;
   if (req.user.role === "user") {
     return res.status(403).json({
       messages: "Unauthorize ",
@@ -220,6 +224,7 @@ const GetAdmin = asyncHandler(async (req, res) => {
         },
       },
     ])
+    .limit(newLimit)
     .sort({ _id: -1 });
 
   return res.status(200).json({
@@ -227,5 +232,6 @@ const GetAdmin = asyncHandler(async (req, res) => {
     data,
   });
 });
+
 
 export { CreateOrder, UpdateOrder, GetAdmin, BuyNow };
