@@ -6,7 +6,7 @@ import {
   Profile,
   SendOtp,
   createUser,
-  getAllUsers,
+  getAllUserByAdmin,
   loginUser,
   newPassword,
 } from "../controller/user.controller.js";
@@ -14,6 +14,7 @@ import { Authontication } from "../middleware/Auth.middleware.js";
 import { upload } from "../middleware/multer.middleware.js";
 import { RegisterValidate } from "../helper/index.helper.js";
 import { RecivedEmail, SendEmail } from "../controller/Email.controller.js";
+import { AdminAuthontication } from "../middleware/Admin.middleware.js";
 
 const router = Router();
 
@@ -25,8 +26,8 @@ router.route("/new-password").post(newPassword);
 router.route("/password").post(Authontication, CrateNewPassword);
 router.route("/profile").post(Authontication, upload.single("image"), Profile);
 router.route("/get-order").get(Authontication, GetOrder);
-router.route("/all-users").get(Authontication, getAllUsers);
-router.route("/recived-mail").post(RecivedEmail)
-router.route("/send-mail").post(SendEmail)
+router.route("/recived-mail").post(RecivedEmail);
+router.route("/send-mail").post(SendEmail);
+router.route("/getAllUserByAdmin").get(AdminAuthontication, getAllUserByAdmin);
 
 export default router;

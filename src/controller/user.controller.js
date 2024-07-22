@@ -150,14 +150,6 @@ const CrateNewPassword = asyncHandler(async (req, res) => {
   });
 });
 
-const getAllUsers = asyncHandler(async (req, res) => {
-  const data = await UserModel.find({});
-  return res.status(200).json({
-    message: "All user Data",
-    data,
-  });
-});
-
 const Profile = asyncHandler(async (req, res) => {
   const file = req.file;
   if (!file) {
@@ -289,6 +281,14 @@ const GetOrder = asyncHandler(async (req, res) => {
   });
 });
 
+const getAllUserByAdmin = asyncHandler(async (req, res) => {
+  const data = await UserModel.find({});
+  return res.status(200).json({
+    message: "All user Data",
+    data,
+  });
+});
+
 export {
   createUser,
   loginUser,
@@ -298,5 +298,5 @@ export {
   CrateNewPassword,
   Profile,
   GetOrder,
-  getAllUsers,
+  getAllUserByAdmin,
 };
