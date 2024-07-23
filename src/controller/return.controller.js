@@ -28,8 +28,8 @@ const Update = asyncHandler(async (req, res) => {
 
 const Getdata = asyncHandler(async (req, res) => {
   const { query } = req;
-  const page = query.page || 1;
-  const limit = query.limit || 5;
+  const page = Number(query.page) || 1;
+  const limit = Number(query.limit) || 5;
   const newLimit = limit * (page - 1);
   const data = await ReturnModel.find({})
     .populate("product_id")
