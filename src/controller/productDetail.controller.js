@@ -42,7 +42,11 @@ const CreateProductDetails = asyncHandler(async (req, res) => {
 
 const AdminGetProductDetails = asyncHandler(async (req, res) => {
   // const { _id } = req.user;
-  const data = await ProductDetailModel.find({});
+  const { query } = req;
+  const page = Number(query.page) || 1;
+  const limit = Number(query.limit) || 10;
+  const newLimit = limit * (page - 1);
+  const data = await ProductDetailModel.find({}).skip(newLimit).limit(limit);
 
   return res.status(200).json({
     message: "data",

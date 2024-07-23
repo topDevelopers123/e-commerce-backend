@@ -282,7 +282,11 @@ const GetOrder = asyncHandler(async (req, res) => {
 });
 
 const getAllUserByAdmin = asyncHandler(async (req, res) => {
-  const data = await UserModel.find({});
+  const { query } = req;
+  const page = Number(query.page) || 1;
+  const limit = Number(query.limit) || 10;
+  const newLimit = limit * (page - 1);
+  const data = await UserModel.find({}).skip(newLimit).limit(limit);
   return res.status(200).json({
     message: "All user Data",
     data,

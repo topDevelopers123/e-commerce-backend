@@ -28,6 +28,6 @@ router.route("/profile").post(Authontication, upload.single("image"), Profile);
 router.route("/get-order").get(Authontication, GetOrder);
 router.route("/recived-mail").post(RecivedEmail);
 router.route("/send-mail").post(SendEmail);
-router.route("/getAllUserByAdmin").get(AdminAuthontication, getAllUserByAdmin);
+router.route("/getAllUserByAdmin?").get(AdminAuthontication, getAllUserByAdmin);
 
 export default router;

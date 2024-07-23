@@ -19,7 +19,7 @@ router
     ProductDetailvalidation,
     CreateProductDetails
   );
-router.route("/admin-get").get(AdminAuthontication, AdminGetProductDetails);
+router.route("/admin-get?").get(AdminAuthontication, AdminGetProductDetails);
 router.route("/delete/:id").delete(AdminAuthontication, DeleteProductDetails);
 router
   .route("/update/:id")
