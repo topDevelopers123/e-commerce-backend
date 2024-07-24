@@ -287,9 +287,12 @@ const getAllUserByAdmin = asyncHandler(async (req, res) => {
   const limit = Number(query.limit) || 10;
   const newLimit = limit * (page - 1);
   const data = await UserModel.find({}).skip(newLimit).limit(limit);
+  const data2 = await UserModel.find({}).countDocuments();
+
   return res.status(200).json({
     message: "All user Data",
     data,
+    totalUsers: data2,
   });
 });
 
