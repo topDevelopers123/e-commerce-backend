@@ -7,15 +7,17 @@ const Create = asyncHandler(async (req, res) => {
   const files = req.files;
 
   let uploadedImages = [];
-  for (const file of files) {
-    try {
-      const imageData = await ImageUpload(file);
-      uploadedImages.push(imageData);
-    } catch (error) {
-      return res.status(500).json({
-        message: "Error uploading images",
-        error: error.message,
-      });
+  if (files || files.length > 0) {
+    for (const file of files) {
+      try {
+        const imageData = await ImageUpload(file);
+        uploadedImages.push(imageData);
+      } catch (error) {
+        return res.status(500).json({
+          message: "Error uploading images",
+          error: error.message,
+        });
+      }
     }
   }
   await ReturnModel.create({
