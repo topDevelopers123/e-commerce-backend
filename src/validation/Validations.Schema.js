@@ -70,7 +70,6 @@ export const ReturnDetail = vine.object({
   product_id:vine.string().minLength(5),
   product_detail_id:vine.string().minLength(5),
   address_id:vine.string().minLength(5),
-  approved:vine.boolean(),
   reason:vine.string(),
   upi_account_no:vine.string(),
   qty:vine.number(),
