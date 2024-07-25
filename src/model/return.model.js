@@ -41,8 +41,9 @@ const returnSchema = new Schema(
       type: Number,
       required: true,
     },
-    description:{
+   description: {
       type: String,
+    },
   },
   { timestamps: true }
 );
