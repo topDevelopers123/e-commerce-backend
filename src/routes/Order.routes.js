@@ -4,6 +4,7 @@ import {
   BuyNow,
   CreateOrder,
   GetAdmin,
+  GetAdminAllData,
   UpdateOrder,
 } from "../controller/order.controller.js";
 import {
@@ -19,6 +20,7 @@ const router = Router();
 router.route("/create").post(Authontication, CreateOrder);
 router.route("/update/:id").put(Authontication, UpdateOrder);
 router.route("/get-orders?").get(AdminAuthontication, GetAdmin);
+router.route("/get-All-orders").get(AdminAuthontication, GetAdminAllData);
 router.route("/buynow").post(Authontication, BuyNow);
 router.route("/payement").post(MakePayement);
 router.route("/refund").post(RefundPayement);
