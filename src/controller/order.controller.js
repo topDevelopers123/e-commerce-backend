@@ -234,20 +234,28 @@ const GetAdmin = asyncHandler(async (req, res) => {
 });
 
 
-const GetAdminAllData = asyncHandler(async (req, res) => {
+
+const GetAdminDashboardData = asyncHandler(async (req, res) => {
   const data = await orderModel.aggregate([{
     $lookup: {
       from: "productdetails", foreignField: "_id", localField: "product_detail_id", as: "ProductDetails",
-      pipeline:[{
-        $project:{
-          sellingPrice:1
+      pipeline: [{
+        $project: {
+          sellingPrice: 1
         }
       }]
     }
   }])
   
-  res.status(200).json({ message: "All order Data fetch", data })
+  const dashboard = []
+  data.map((item) => {
+    if (item.payment_status === "success" && item.status != "returned" && item.status != "cancelled") {
+      dashboard.push({ "quantity": item.quantity, "ProductDetails": item.ProductDetails, "createdAt": item.createdAt })
+    }
+  })
+  
+  res.status(200).json({ message: "All order Data fetch", data: dashboard })
 })
 
 
-export { CreateOrder, UpdateOrder, GetAdmin, BuyNow, GetAdminAllData };
+export { CreateOrder, UpdateOrder, GetAdmin, BuyNow, GetAdminDashboardData };
