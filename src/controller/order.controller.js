@@ -234,4 +234,20 @@ const GetAdmin = asyncHandler(async (req, res) => {
 });
 
 
-export { CreateOrder, UpdateOrder, GetAdmin, BuyNow };
+const GetAdminAllData = asyncHandler(async (req, res) => {
+  const data = await orderModel.aggregate([{
+    $lookup: {
+      from: "productdetails", foreignField: "_id", localField: "product_detail_id", as: "ProductDetails",
+      pipeline:[{
+        $project:{
+          sellingPrice:1
+        }
+      }]
+    }
+  }])
+  
+  res.status(200).json({ message: "All order Data fetch", data })
+})
+
+
+export { CreateOrder, UpdateOrder, GetAdmin, BuyNow, GetAdminAllData };
