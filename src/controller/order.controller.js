@@ -246,13 +246,26 @@ const GetAdminDashboardData = asyncHandler(async (req, res) => {
       }]
     }
   }])
-  
-  const dashboard = []
+
+  const newData = []
+  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   data.map((item) => {
     if (item.payment_status === "success" && item.status != "returned" && item.status != "cancelled") {
-      dashboard.push({ "quantity": item.quantity, "ProductDetails": item.ProductDetails, "createdAt": item.createdAt })
+      const date = new Date(item.createdAt)
+      const month = monthNames[date.getMonth()];
+      const year = date.getFullYear();
+      const formattedDate = `${month}-${year}`;
+      newData.push({ "sale": item.quantity * item.ProductDetails[0].sellingPrice, "month": formattedDate })
     }
   })
+  const dashboard = newData.reduce((acc, curr) => {
+    if (acc[curr.month]) {
+      acc[curr.month] += curr.sale;
+    } else {
+      acc[curr.month] = curr.sale;
+    }
+    return acc;
+  }, {});
   
   res.status(200).json({ message: "All order Data fetch", data: dashboard })
 })
