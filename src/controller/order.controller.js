@@ -266,8 +266,25 @@ const GetAdminDashboardData = asyncHandler(async (req, res) => {
     }
     return acc;
   }, {});
-  
-  res.status(200).json({ message: "All order Data fetch", data: dashboard })
+  console.log(data)
+  let dashboardRevenue = { "label": [], "revenue": [] };
+  for (const key in dashboard) {
+    dashboardRevenue.label.push(key)
+    dashboardRevenue.revenue.push(dashboard[key])
+  }
+
+  let booking = 0, cancelled = 0, delivered = 0, returned = 0;
+
+  data.map((item) => {
+    if (item.status === "cancelled") cancelled++;
+    if (item.status === "delivered") delivered++;
+    if (item.status === "pending") booking++;
+    if (item.status === "returned") returned++;
+  })
+
+
+
+  res.status(200).json({ message: "All order Data fetch", data: dashboardRevenue, booking, cancelled, delivered, returned })
 })
 
 
