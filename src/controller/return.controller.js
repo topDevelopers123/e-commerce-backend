@@ -1,9 +1,30 @@
 import { ReturnModel } from "../model/return.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import { ImageUpload } from "../utils/ImageHandler.js";
 
 const Create = asyncHandler(async (req, res) => {
   const data = req.body;
-  await ReturnModel.create({ ...data, user_id: req.user?._id });
+  const files = req.files;
+
+  let uploadedImages = [];
+  if (files || files.length > 0) {
+    for (const file of files) {
+      try {
+        const imageData = await ImageUpload(file);
+        uploadedImages.push(imageData);
+      } catch (error) {
+        return res.status(500).json({
+          message: "Error uploading images",
+          error: error.message,
+        });
+      }
+    }
+  }
+  await ReturnModel.create({
+    ...data,
+    user_id: req.user?._id,
+    image: uploadedImages,
+  });
   return res.status(201).json({
     message: "Order returned Successful",
   });
@@ -20,7 +41,7 @@ const Update = asyncHandler(async (req, res) => {
   }
 
   await ReturnModel.findByIdAndUpdate(id, { approved }, { new: true });
-  
+
   return res.status(200).json({
     message: "Return approved successful",
   });
