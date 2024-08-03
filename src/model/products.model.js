@@ -30,6 +30,10 @@ const products = new Schema(
       ref: "subInnerCategory",
       required: true,
     },
+    ActualWeight:{
+      type :Number,
+      required:[true,"weight in kilogram"]
+    },
     SGST: {
       type: Number,
       required: true,

@@ -1,7 +1,41 @@
+import axios from "axios";
 import { cartModel } from "../model/cart.model.js";
 import { orderModel } from "../model/order.model.js";
 import { ProductDetailModel } from "../model/ProductDetail.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import {   WayBill } from "../helper/BlueDart.js";
+import { GenerateToken } from "../helper/BlueDartToken.js";
+
+export const LocationFinder = asyncHandler(async (req, res) => {
+  try {
+    const pincode = req.body.pincode; // Ensure `pincode` is extracted from request body
+    const token = await GenerateToken();
+
+    const options = {
+      method: 'POST',
+      url: 'https://apigateway-sandbox.bluedart.com/in/transportation/finder/v1/GetServicesforPincode',
+      headers: {
+        'content-type': 'application/json',
+        JWTToken: token
+      },
+      data: {
+        pinCode: pincode,
+        profile: {
+          LoginID: process.env.BLUE_DART_LoginID,
+          Api_type: 'S',
+          LicenceKey: process.env.BLUE_DART_LicenceKey
+        }
+      }
+    };
+
+    const response = await axios.request(options);
+    console.log(response.data.GetServicesforPincodeResult)
+    res.status(200).json({IsError:response?.data?.GetServicesforPincodeResult.IsError});
+
+  } catch (error) {
+    res.status(400).json({ error: "pincode do not exist or delivery is not available", IsError :true});
+  }
+});
 
 const CreateOrder = asyncHandler(async (req, res) => {
   const data = req.body;
@@ -54,16 +88,26 @@ const CreateOrder = asyncHandler(async (req, res) => {
 const BuyNow = asyncHandler(async (req, res) => {
   const data = req.body;
 
-  const create = await orderModel.create({ ...data, user_id: req.user?._id });
+  const token = await GenerateToken()
+  const trackDetail = await WayBill(token, data.razorpay_order_id)
 
-  const totalStock = await ProductDetailModel.findById(data.product_detail_id);
+  // await TrackModel.create({ ...trackDetail, user_id :req?.user._id})
+  // await TrackOrder(token, trackDetail.trackingID)    
 
-  await ProductDetailModel.findByIdAndUpdate(data.product_detail_id, {
-    inStock: totalStock.inStock - data.quantity,
-  });
+
+
+  // const create = await orderModel.create({ ...data, user_id: req.user?._id });
+
+  // const totalStock = await ProductDetailModel.findById(data.product_detail_id);
+
+  // await ProductDetailModel.findByIdAndUpdate(data.product_detail_id, {
+  //   inStock: totalStock.inStock - data.quantity,
+  // });
   return res.status(201).json({
     message: "Ordered Successful",
-    data: create,
+    // data: create,
+    trackDetail,
+    token
   });
 });
 
@@ -233,5 +277,57 @@ const GetAdmin = asyncHandler(async (req, res) => {
   });
 });
 
+const GetAdminDashboardData = asyncHandler(async (req, res) => {
+  const data = await orderModel.aggregate([{
+    $lookup: {
+      from: "productdetails", foreignField: "_id", localField: "product_detail_id", as: "ProductDetails",
+      pipeline: [{
+        $project: {
+          sellingPrice: 1
+        }
+      }]
+    }
+  }])
 
-export { CreateOrder, UpdateOrder, GetAdmin, BuyNow };
+  const newData = []
+  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  data.map((item) => {
+    if (item.payment_status === "success" && item.status != "returned" && item.status != "cancelled") {
+      const date = new Date(item.createdAt)
+      const month = monthNames[date.getMonth()];
+      const year = date.getFullYear();
+      const formattedDate = `${month}-${year}`;
+      newData.push({ "sale": item.quantity * item.ProductDetails[0].sellingPrice, "month": formattedDate })
+    }
+  })
+  const dashboard = newData.reduce((acc, curr) => {
+    if (acc[curr.month]) {
+      acc[curr.month] += curr.sale;
+    } else {
+      acc[curr.month] = curr.sale;
+    }
+    return acc;
+  }, {});
+  console.log(data)
+  let dashboardRevenue = { "label": [], "revenue": [] };
+  for (const key in dashboard) {
+    dashboardRevenue.label.push(key)
+    dashboardRevenue.revenue.push(dashboard[key])
+  }
+
+  let booking = 0, cancelled = 0, delivered = 0, returned = 0;
+
+  data.map((item) => {
+    if (item.status === "cancelled") cancelled++;
+    if (item.status === "delivered") delivered++;
+    if (item.status === "pending") booking++;
+    if (item.status === "returned") returned++;
+  })
+
+
+
+  res.status(200).json({ message: "All order Data fetch", data: dashboardRevenue, booking, cancelled, delivered, returned })
+})
+
+
+export { CreateOrder, UpdateOrder, GetAdmin, BuyNow, GetAdminDashboardData };
