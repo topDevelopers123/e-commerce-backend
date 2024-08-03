@@ -28,7 +28,6 @@ export const LocationFinder = asyncHandler(async (req, res) => {
     };
 
     const response = await axios.request(options);
-    console.log(response.data.GetServicesforPincodeResult)
     res.status(200).json({IsError:response?.data?.GetServicesforPincodeResult.IsError});
 
   } catch (error) {
@@ -306,7 +305,6 @@ const GetAdminDashboardData = asyncHandler(async (req, res) => {
     }
     return acc;
   }, {});
-  console.log(data)
   let dashboardRevenue = { "label": [], "revenue": [] };
   for (const key in dashboard) {
     dashboardRevenue.label.push(key)
