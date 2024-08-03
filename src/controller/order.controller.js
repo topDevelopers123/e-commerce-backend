@@ -3,7 +3,6 @@ import { cartModel } from "../model/cart.model.js";
 import { orderModel } from "../model/order.model.js";
 import { ProductDetailModel } from "../model/ProductDetail.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import {   WayBill } from "../helper/BlueDart.js";
 import { GenerateToken } from "../helper/BlueDartToken.js";
 
 export const LocationFinder = asyncHandler(async (req, res) => {
@@ -88,24 +87,23 @@ const CreateOrder = asyncHandler(async (req, res) => {
 const BuyNow = asyncHandler(async (req, res) => {
   const data = req.body;
 
-  const token = await GenerateToken()
-  const trackDetail = await WayBill(token, data.razorpay_order_id)
+  // const token = await GenerateToken()
+  // const trackDetail = await WayBill(token, data.razorpay_order_id)
 
   // await TrackModel.create({ ...trackDetail, user_id :req?.user._id})
   // await TrackOrder(token, trackDetail.trackingID)    
 
 
+  const create = await orderModel.create({ ...data, user_id: req.user?._id });
 
-  // const create = await orderModel.create({ ...data, user_id: req.user?._id });
+  const totalStock = await ProductDetailModel.findById(data.product_detail_id);
 
-  // const totalStock = await ProductDetailModel.findById(data.product_detail_id);
-
-  // await ProductDetailModel.findByIdAndUpdate(data.product_detail_id, {
-  //   inStock: totalStock.inStock - data.quantity,
-  // });
+  await ProductDetailModel.findByIdAndUpdate(data.product_detail_id, {
+    inStock: totalStock.inStock - data.quantity,
+  });
   return res.status(201).json({
     message: "Ordered Successful",
-    // data: create,
+    data: create,
     trackDetail,
     token
   });
