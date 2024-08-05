@@ -28,7 +28,7 @@ export const LocationFinder = asyncHandler(async (req, res) => {
   };
 
   const response = await axios.request(options);
-  if (response?.data?.GetServicesforPincodeResult.IsError) {
+  if (response?.data?.GetServicesforPincodeResult) {
 
     res.status(200).json({ IsError: response?.data?.GetServicesforPincodeResult.IsError });
   }
