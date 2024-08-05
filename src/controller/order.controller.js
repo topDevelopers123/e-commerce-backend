@@ -32,7 +32,7 @@ export const LocationFinder = asyncHandler(async (req, res) => {
 
     res.status(200).json({ IsError: response?.data?.GetServicesforPincodeResult.IsError });
   }
-  res.status(400).json({ data: { error: "pincode do not exist or delivery is not available", IsError: true } });
+  res.status(200).json({ error: "pincode do not exist or delivery is not available", IsError: true } );
 });
 
 const CreateOrder = asyncHandler(async (req, res) => {
