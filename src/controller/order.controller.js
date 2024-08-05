@@ -6,34 +6,33 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { GenerateToken } from "../helper/BlueDartToken.js";
 
 export const LocationFinder = asyncHandler(async (req, res) => {
-  try {
-    const pincode = req.body.pincode; // Ensure `pincode` is extracted from request body
-    const token = await GenerateToken();
 
-    const options = {
-      method: 'POST',
-      url: 'https://apigateway-sandbox.bluedart.com/in/transportation/finder/v1/GetServicesforPincode',
-      headers: {
-        'content-type': 'application/json',
-        JWTToken: token
-      },
-      data: {
-        pinCode: pincode,
-        profile: {
-          LoginID: process.env.BLUE_DART_LoginID,
-          Api_type: 'S',
-          LicenceKey: process.env.BLUE_DART_LicenceKey
-        }
+  const pincode = req.body.pincode; // Ensure `pincode` is extracted from request body
+  const token = await GenerateToken();
+
+  const options = {
+    method: 'POST',
+    url: 'https://apigateway-sandbox.bluedart.com/in/transportation/finder/v1/GetServicesforPincode',
+    headers: {
+      'content-type': 'application/json',
+      JWTToken: token
+    },
+    data: {
+      pinCode: pincode,
+      profile: {
+        LoginID: process.env.BLUE_DART_LoginID,
+        Api_type: 'S',
+        LicenceKey: process.env.BLUE_DART_LicenceKey
       }
-    };
+    }
+  };
 
-    const response = await axios.request(options);
-    console.log(response.data.GetServicesforPincodeResult)
-    res.status(200).json({IsError:response?.data?.GetServicesforPincodeResult.IsError});
+  const response = await axios.request(options);
+  if (response?.data?.GetServicesforPincodeResult.IsError) {
 
-  } catch (error) {
-    res.status(400).json({ error: "pincode do not exist or delivery is not available", IsError :true});
+    res.status(200).json({ IsError: response?.data?.GetServicesforPincodeResult.IsError });
   }
+  res.status(400).json({ data: { error: "pincode do not exist or delivery is not available", IsError: true } });
 });
 
 const CreateOrder = asyncHandler(async (req, res) => {
