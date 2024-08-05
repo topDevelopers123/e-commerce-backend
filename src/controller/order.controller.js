@@ -27,12 +27,15 @@ export const LocationFinder = asyncHandler(async (req, res) => {
     }
   };
 
-  const response = await axios.request(options);
-  if (response) {
+  try {
+    const response = await axios.request(options);
+    if (response) {
 
-    res.status(200).json({ IsError: response?.data?.GetServicesforPincodeResult.IsError });
-  }else{
-    res.status(200).json({ error: "pincode do not exist or delivery is not available", IsError: true } );
+      res.status(200).json({ IsError: response?.data?.GetServicesforPincodeResult.IsError });
+    }
+
+  } catch (error) {
+    res.status(200).json({ error: "pincode do not exist or delivery is not available", IsError: true });
   }
 });
 
