@@ -305,7 +305,6 @@ const GetAdminDashboardData = asyncHandler(async (req, res) => {
     }
     return acc;
   }, {});
-  console.log(data)
   let dashboardRevenue = { "label": [], "revenue": [] };
   for (const key in dashboard) {
     dashboardRevenue.label.push(key)
