@@ -289,18 +289,11 @@ const getAllUserByAdmin = asyncHandler(async (req, res) => {
   const data = await UserModel.find({}).skip(newLimit).limit(limit);
   const data2 = await UserModel.find({}).countDocuments();
 
-  return res.status(200).json({
-    message: "All user Data",
-    data,
-    totalUsers: data2,
-  });
-});
-const AdminGetAllUsers = asyncHandler(async (req, res) => {
-  const data = await UserModel.find({}).countDocuments();
 
   return res.status(200).json({
     message: "All user Data",
     data,
+    totalUsers: data2,
   });
 });
 
@@ -314,5 +307,4 @@ export {
   Profile,
   GetOrder,
   getAllUserByAdmin,
-  AdminGetAllUsers
 };
