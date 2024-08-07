@@ -295,6 +295,14 @@ const getAllUserByAdmin = asyncHandler(async (req, res) => {
     totalUsers: data2,
   });
 });
+const AdminGetAllUsers = asyncHandler(async (req, res) => {
+  const data = await UserModel.find({}).countDocuments();
+
+  return res.status(200).json({
+    message: "All user Data",
+    data,
+  });
+});
 
 export {
   createUser,
@@ -306,4 +314,5 @@ export {
   Profile,
   GetOrder,
   getAllUserByAdmin,
+  AdminGetAllUsers
 };

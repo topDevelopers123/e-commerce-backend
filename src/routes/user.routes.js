@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  AdminGetAllUsers,
   CheckOtp,
   CrateNewPassword,
   GetOrder,
@@ -29,5 +30,7 @@ router.route("/get-order").get(Authontication, GetOrder);
 router.route("/recived-mail").post(RecivedEmail);
 router.route("/send-mail").post(SendEmail);
 router.route("/getAllUserByAdmin?").get(AdminAuthontication, getAllUserByAdmin);
+router.route("/AdminGetAllUsers").get(AdminAuthontication, AdminGetAllUsers);
+
 
 export default router;

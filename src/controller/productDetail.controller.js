@@ -25,14 +25,8 @@ const CreateProductDetails = asyncHandler(async (req, res) => {
   const Create = await ProductDetailModel.create({
     ...data,
     image: uploadedImages,
-    user_id: req.user?._id,
   });
 
-  await ProductModel.findByIdAndUpdate(data.product_id, {
-    $push: {
-      products_details: Create._id,
-    },
-  });
 
   return res.status(201).json({
     message: "Product Details Created Successful",

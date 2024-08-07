@@ -143,7 +143,7 @@ const GetProduct = asyncHandler(async (req, res) => {
 const AdminGetProduct = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   const { query } = req;
-  const page = Number(query.page )|| 1;
+  const page = Number(query.page) || 1;
   const limit = Number(query.limit) || 1;
   const newLimit = limit * (page - 1);
 
@@ -224,6 +224,19 @@ const AdminGetProduct = asyncHandler(async (req, res) => {
   });
 });
 
+const adminGetAllProduct = asyncHandler(async (req, res) => {
+
+  const data = await ProductModel.find({})
+  if (!data) {
+    res.status(400).json({ data, message: "Failed to fetch product" })
+  }
+
+  res.status(200).json({ data, message: "All product fetch" })
+
+
+
+})
+
 const DeleteProduct = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
@@ -270,4 +283,5 @@ export {
   AdminGetProduct,
   DeleteProduct,
   UpdateProduct,
+  adminGetAllProduct
 };
